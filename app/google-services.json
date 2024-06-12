@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "847758767833",
+    "project_id": "cognitiveappproject",
+    "storage_bucket": "cognitiveappproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847758767833:android:40363dde68e094c620b0c8",
+        "android_client_info": {
+          "package_name": "com.example.cognitiveassesmenttest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnZ23d8LI-R9cc8QPeD1GC5GquUJTuUJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
