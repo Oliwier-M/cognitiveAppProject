@@ -29,8 +29,10 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
+        auth = FirebaseAuth.getInstance()
+
         val login = findViewById<Button>(R.id.loginButton)
-        val inputEmail = findViewById<TextView>(R.id.emailInput)
+        val inputEmail = findViewById<TextView>(R.id.emailText)
         val inputPassword = findViewById<TextView>(R.id.passwordText)
         val register = findViewById<TextView>(R.id.RegisterButton)
 
