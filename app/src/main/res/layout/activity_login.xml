@@ -6,14 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.LoginActivity">
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:fontFamily="sans-serif"
+        android:text="Welcome to CognitiveApp!"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_width="170dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="14dp"
         android:fontFamily="sans-serif"
         android:text="Don't have an account?"
         android:textColor="#1A4153"
@@ -26,10 +39,10 @@
     <TextView
         android:id="@+id/RegisterButton"
         android:layout_width="96dp"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="14dp"
         android:backgroundTint="#FFFFFF"
         android:fontFamily="sans-serif"
         android:outlineProvider="none"
@@ -50,21 +63,19 @@
         android:id="@+id/emailText"
         android:layout_width="240dp"
         android:layout_height="50dp"
-        android:layout_marginStart="86dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="85dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="email"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_marginStart="142dp"
         android:layout_marginEnd="142dp"
         android:layout_marginBottom="400dp"
@@ -72,7 +83,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:shapeAppearanceOverlay="@style/CircularImageViewStyle"
+        app:srcCompat="@drawable/logo"
+        android:scaleType="centerCrop" />
 
     <Button
         android:id="@+id/loginButton"
@@ -85,6 +98,7 @@
         android:textStyle="bold"
         app:cornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
@@ -97,6 +111,7 @@
         android:hint="password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailText" />
 
