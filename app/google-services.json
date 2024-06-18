@@ -2,6 +2,7 @@
   "project_info": {
     "project_number": "847758767833",
     "project_id": "cognitiveappproject",
+    "firebase_url": "https://cognitiveappproject-default-rtdb.europe-west1.firebasedatabase.app",
     "storage_bucket": "cognitiveappproject.appspot.com"
   },
   "client": [
