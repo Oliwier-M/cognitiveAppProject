@@ -9,12 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cognitiveassesmenttest.databinding.FragmentGalleryBinding
 
-class GalleryFragment : Fragment() {
+class GalleryFragment : Fragment(), Timer.TimerUpdateListener  {
+
+
 
     private var _binding: FragmentGalleryBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -38,5 +37,9 @@ class GalleryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onTimeUpdate(time: String?) {
+        TODO("Not yet implemented")
     }
 }

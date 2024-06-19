@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.gameone.TrailMakingTestActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="?attr/colorPrimary"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:background="?attr/colorPrimary"
+            android:fontFamily="@font/bowlby_one_sc"
+            android:text="@string/back"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="@string/start"
+            android:background="?attr/colorPrimary"
+            android:fontFamily="@font/bowlby_one_sc"
+            android:textSize="16sp"
+            android:layout_marginStart="20dp"/>
+
+        <View
+            android:layout_width="120dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:text="@string/timeFormat"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="@color/white" />
+
+<!--    <androidx.gridlayout.widget.GridLayout-->
+<!--        android:id="@+id/grid"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:columnCount="10"-->
+<!--        app:rowCount="15"-->
+<!--        app:columnOrderPreserved="true"-->
+<!--        app:rowOrderPreserved="true">-->
+
+<!--    </androidx.gridlayout.widget.GridLayout>-->
+</LinearLayout>

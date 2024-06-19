@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cognitiveassesmenttest.ui.MainMenuActivity
+import com.example.cognitiveassesmenttest.MainActivity
 import com.example.cognitiveassesmenttest.R
 import com.google.firebase.auth.FirebaseAuth
 
@@ -62,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { signInTask ->
                 if (signInTask.isSuccessful) {
-                    val intent = Intent(this, MainMenuActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show()
                     intent.putExtra("email", email)
                     startActivity(intent)

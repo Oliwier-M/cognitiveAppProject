@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainMenuActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -16,7 +16,39 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.CognitiveAssesmentTest.PopupOverlay" />
+            app:popupTheme="@style/Theme.CognitiveAssesmentTest.PopupOverlay">
+
+            <!-- Spacer to push profile to the right -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Profile Icon -->
+            <ImageButton
+                android:id="@+id/profileButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_profile"
+                android:contentDescription="@string/profile"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <!-- Stats Icon -->
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_stats"
+                android:contentDescription="@string/stats"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
