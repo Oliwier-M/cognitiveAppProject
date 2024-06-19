@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
+import com.example.cognitiveassesmenttest.ui.hrb.ShapeActivity
 import com.example.cognitiveassesmenttest.ui.mmse.RepetitionActivity
 import com.google.firebase.FirebaseApp
 
@@ -37,7 +38,9 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         gameThreeButton.setOnClickListener {
-
+            val intent = Intent(this, ShapeActivity::class.java)
+            startActivity(intent)
+            this.finish()
         }
     }
 }

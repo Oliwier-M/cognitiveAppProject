@@ -16,6 +16,18 @@
         android:theme="@style/Theme.CognitiveAssesmentTest"
         tools:targetApi="34">
         <activity
+            android:name=".ui.hrb.AphasiaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.SpeechSoundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.SeashoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.ShapeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.mmse.SummaryActivity"
             android:exported="false" />
         <activity
