@@ -1,12 +1,14 @@
 package com.example.cognitiveassesmenttest.ui.mmse
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,6 +17,8 @@ import com.example.cognitiveassesmenttest.ui.MainMenuActivity
 import com.example.cognitiveassesmenttest.ui.db.UserScore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class SummaryActivity : AppCompatActivity() {
 
@@ -59,6 +63,7 @@ class SummaryActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveScoreToFirebase(score: Int) {
         val user = auth.currentUser
         if (user != null) {
@@ -66,7 +71,8 @@ class SummaryActivity : AppCompatActivity() {
             val database = FirebaseDatabase.getInstance()
             val scoresRef = database.getReference("scores")
             val scoreId = scoresRef.push().key ?: ""
-            val userScore = UserScore(userId, score, "MMSE")
+            val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            val userScore = UserScore(userId, score, "MMSE", currentDateTime)
 
             scoresRef.child(scoreId).setValue(userScore)
                 .addOnSuccessListener {
