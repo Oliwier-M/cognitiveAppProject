@@ -10,7 +10,9 @@ import android.widget.Button
 import com.example.cognitiveassesmenttest.R
 import com.example.cognitiveassesmenttest.databinding.FragmentMainMenuBinding
 import com.example.cognitiveassesmenttest.ui.gameone.TrailMakingTestActivity
+import com.example.cognitiveassesmenttest.ui.mmse.RepetitionActivity
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Class
+import com.google.firebase.FirebaseApp
 
 /**
  * A simple [Fragment] subclass.
@@ -28,11 +30,24 @@ class MainMenuFragment : Fragment() {
         _binding = FragmentMainMenuBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val gameOne = root.findViewById<Button>(R.id.gameOne)
+        FirebaseApp.initializeApp(requireContext())   // not sure what that is
 
-        gameOne.setOnClickListener{
+        val gameOneButton = root.findViewById<Button>(R.id.gameOne)
+        val gameTwoButton = root.findViewById<Button>(R.id.gameTwo)
+        val gameThreeButton = root.findViewById<Button>(R.id.gameThree)
+
+        gameOneButton.setOnClickListener{
             val intent = Intent(requireContext(), TrailMakingTestActivity::class.java)
             startActivity(intent)
+        }
+
+        gameTwoButton.setOnClickListener {
+            val intent = Intent(requireContext(), RepetitionActivity::class.java)
+            startActivity(intent)
+        }
+
+        gameThreeButton.setOnClickListener {
+
         }
 
 
