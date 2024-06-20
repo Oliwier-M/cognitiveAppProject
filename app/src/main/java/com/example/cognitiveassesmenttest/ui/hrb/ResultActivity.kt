@@ -1,4 +1,4 @@
-package com.example.cognitiveassesmenttest.ui.mmse
+package com.example.cognitiveassesmenttest.ui.hrb
 
 import android.content.Intent
 import android.os.Build
@@ -14,14 +14,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
 import com.example.cognitiveassesmenttest.ui.MainMenuActivity
-import com.example.cognitiveassesmenttest.ui.db.MMSEScore
+import com.example.cognitiveassesmenttest.ui.db.HRBScore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class SummaryActivity : AppCompatActivity() {
-
+class ResultActivity : AppCompatActivity() {
     private lateinit var resultText: TextView
     private lateinit var infoText: TextView
     private lateinit var menuButton: Button
@@ -32,12 +31,13 @@ class SummaryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_summary)
+        setContentView(R.layout.activity_result)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         auth = FirebaseAuth.getInstance()
         resultText = findViewById(R.id.resultText)
@@ -45,11 +45,11 @@ class SummaryActivity : AppCompatActivity() {
         menuButton = findViewById(R.id.menuButton)
         val finalScore = intent.getIntExtra("score", 0)
 
-        resultText.text = "Your score: $finalScore/18 points"
+        resultText.text = "Your score: $finalScore points"
         setInfoText(finalScore)
         saveScoreToFirebase(finalScore)
-
         menuButton.setOnClickListener {
+
             val intent = Intent(this, MainMenuActivity::class.java)
             startActivity(intent)
             finish()
@@ -57,13 +57,13 @@ class SummaryActivity : AppCompatActivity() {
     }
 
     private fun setInfoText(finalScore: Int) {
-         diagnosis = when {
-            finalScore >= 16 -> "no cognitive impairment"
-            finalScore in 11..15 -> "mild dementia"
-            finalScore in 6..10 -> "moderate dementia"
+        diagnosis = when {
+            finalScore >= 12 -> "no cognitive impairment"
+            finalScore in 9..11 -> "mild dementia"
+            finalScore in 6..8 -> "moderate dementia"
             else -> "severe dementia"
         }
-        infoText.text = "You have $diagnosis"
+        infoText.text = "You have $diagnosis."
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -72,10 +72,10 @@ class SummaryActivity : AppCompatActivity() {
         if (user != null) {
             val userId = user.uid
             val database = FirebaseDatabase.getInstance()
-            val scoresRef = database.getReference("MMSE_scores")
+            val scoresRef = database.getReference("HRB_scores")
             val scoreId = scoresRef.push().key ?: ""
             val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-            val userScore = MMSEScore(userId, "$score/18", diagnosis, currentDateTime)
+            val userScore = HRBScore(userId, "$score/14", diagnosis, currentDateTime)
 
             scoresRef.child(scoreId).setValue(userScore)
                 .addOnSuccessListener {
@@ -92,5 +92,4 @@ class SummaryActivity : AppCompatActivity() {
                 }
         }
     }
-
 }

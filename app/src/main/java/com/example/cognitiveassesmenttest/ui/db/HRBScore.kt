@@ -1,8 +1,8 @@
 package com.example.cognitiveassesmenttest.ui.db
 
-data class UserScore(
+data class HRBScore(
     val userId: String,
-    val score: Int,
-    val assessmentType: String,
+    val score: String,
+    val diagnosis: String,
     val time: String
 )

@@ -16,13 +16,19 @@
         android:theme="@style/Theme.CognitiveAssesmentTest"
         tools:targetApi="34">
         <activity
-            android:name=".ui.hrb.AphasiaActivity"
+            android:name=".ui.hrb.SentenceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.NamingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.hrb.SpeechSoundActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.hrb.SeashoreActivity"
+            android:name=".ui.hrb.SameSoundActivity"
             android:exported="false" />
         <activity
             android:name=".ui.hrb.ShapeActivity"
