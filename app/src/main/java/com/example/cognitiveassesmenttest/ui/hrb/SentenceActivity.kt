@@ -168,8 +168,6 @@ class SentenceActivity : AppCompatActivity(), RecognitionListener {
 
         if (recognizedSentence != null) {
             Toast.makeText(this, "Recognized: $recognizedSentence", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "No recognized sentence", Toast.LENGTH_SHORT).show()
         }
 
         if (recognizedSentence.equals(sentences[currentSentenceIndex], ignoreCase = true)) {

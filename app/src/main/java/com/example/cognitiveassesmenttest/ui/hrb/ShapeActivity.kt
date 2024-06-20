@@ -3,7 +3,6 @@ package com.example.cognitiveassesmenttest.ui.hrb
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -60,7 +59,7 @@ class ShapeActivity : AppCompatActivity() {
                 intent.putExtra("score", score)
                 startActivity(intent)
                 finish()
-            }, 2000)
+            }, 1500)
         }
     }
 
@@ -108,7 +107,6 @@ class ShapeActivity : AppCompatActivity() {
         if (score == correctAnswers.size) {
             ans1.backgroundTintList = resources.getColorStateList(R.color.green)
             ans3.backgroundTintList = resources.getColorStateList(R.color.green)
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show()
         } else {
             selectedAnswers.forEach {
                 if (!correctAnswers.contains(it)) {

@@ -133,7 +133,7 @@ class SpeechSoundActivity : AppCompatActivity() {
 
         if (ans3.isSelected) {
             score = 2
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show()
+
         } else {
             if(ans1.isSelected) {
                 ans1.backgroundTintList = resources.getColorStateList(R.color.red)
@@ -141,7 +141,6 @@ class SpeechSoundActivity : AppCompatActivity() {
             else if(ans2.isSelected) {
                 ans2.backgroundTintList = resources.getColorStateList(R.color.red)
             }
-            Toast.makeText(this, "Incorrect", Toast.LENGTH_SHORT).show()
         }
         return score
     }

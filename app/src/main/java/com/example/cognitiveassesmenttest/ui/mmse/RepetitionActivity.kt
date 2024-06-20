@@ -22,11 +22,11 @@ import com.example.cognitiveassesmenttest.R
 import java.util.*
 
 class RepetitionActivity : AppCompatActivity(), RecognitionListener {
-    private var textToSpeech: TextToSpeech? = null
-    private var speechRecognizer: SpeechRecognizer? = null
-    private var readButton: Button? = null
-    private var speakButton: Button? = null
-    private var resultView: TextView? = null
+    private lateinit var textToSpeech: TextToSpeech
+    private lateinit var speechRecognizer: SpeechRecognizer
+    private lateinit var readButton: Button
+    private lateinit var speakButton: Button
+    private lateinit var resultView: TextView
     private var repetitions = 5
     companion object {
         private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
@@ -45,9 +45,9 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
         readButton = findViewById(R.id.readButton)
         speakButton = findViewById(R.id.speakButton)
         resultView = findViewById(R.id.resultView)
-        speakButton?.isVisible = false
+        speakButton.isVisible = false
 
-        speakButton?.let {
+        speakButton.let {
             if (it.isPressed) {
                 it.text = "Listening..."
             } else {
@@ -73,7 +73,7 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
             this
         ) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                val result = textToSpeech!!.setLanguage(Locale.US)
+                val result = textToSpeech.setLanguage(Locale.US)
                 if (result == TextToSpeech.LANG_MISSING_DATA ||
                     result == TextToSpeech.LANG_NOT_SUPPORTED
                 ) {
@@ -84,13 +84,13 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
             }
         }
 
-        readButton?.setOnClickListener {
+        readButton.setOnClickListener {
             val words = arrayOf("Monkey", "Apple", "Shelf")
             for (word in words) {
-                textToSpeech?.speak(word, TextToSpeech.QUEUE_ADD, null, null)
+                textToSpeech.speak(word, TextToSpeech.QUEUE_ADD, null, null)
 
                 Thread.sleep(1000)
-                speakButton?.isVisible = true
+                speakButton.isVisible = true
             }
         }
 
@@ -98,9 +98,9 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
 
     private fun setupSpeechRecognition() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
-        speechRecognizer?.setRecognitionListener(this)
+        speechRecognizer.setRecognitionListener(this)
 
-        speakButton?.setOnLongClickListener {
+        speakButton.setOnLongClickListener {
             startListening()
             true
         }
@@ -113,7 +113,7 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...")
 
         try {
-            speechRecognizer?.startListening(intent)
+            speechRecognizer.startListening(intent)
         } catch (e: Exception) {
             Toast.makeText(this, "Speech recognition failed", Toast.LENGTH_SHORT).show()
         }
@@ -154,7 +154,7 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
     override fun onResults(results: Bundle?) {
         val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
         var score = 0
-        resultView?.text = "Recognised words: " + matches?.joinToString(", ")
+        resultView.text = "Recognised words: " + matches?.joinToString(", ")
         matches?.let {
             var recognizedCorrectly = false
             val originalWords = arrayOf("Monkey", "Apple", "Shelf")
@@ -216,9 +216,9 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
     }
 
     override fun onDestroy() {
-        textToSpeech?.stop()
-        textToSpeech?.shutdown()
-        speechRecognizer?.destroy()
+        textToSpeech.stop()
+        textToSpeech.shutdown()
+        speechRecognizer.destroy()
         super.onDestroy()
     }
 }

@@ -80,7 +80,7 @@ class ResultActivity : AppCompatActivity() {
             scoresRef.child(scoreId).setValue(userScore)
                 .addOnSuccessListener {
                     Log.d("Firebase", "Score successfully saved with ID: $scoreId")
-                    Toast.makeText(this, "Score saved to Firebase!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Score saved successfully", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { exception ->
                     Log.e("Firebase", "Failed to save score", exception)
