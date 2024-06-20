@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#D7E45A"/> <!-- Replace with your background color -->
+    <stroke
+        android:width="6dp"
+        android:color="#BECC40"/> <!-- Replace with your darker border color -->
+    <size
+        android:width="60dp" /> <!-- Diameter of the circle -->
+</shape>

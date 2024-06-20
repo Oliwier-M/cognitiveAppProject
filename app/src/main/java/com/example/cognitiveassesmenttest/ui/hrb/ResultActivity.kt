@@ -12,8 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.cognitiveassesmenttest.MainActivity
 import com.example.cognitiveassesmenttest.R
-import com.example.cognitiveassesmenttest.ui.MainMenuActivity
 import com.example.cognitiveassesmenttest.ui.db.HRBScore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -50,7 +50,7 @@ class ResultActivity : AppCompatActivity() {
         saveScoreToFirebase(finalScore)
         menuButton.setOnClickListener {
 
-            val intent = Intent(this, MainMenuActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }

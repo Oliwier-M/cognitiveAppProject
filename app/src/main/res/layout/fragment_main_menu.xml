@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    tools:context=".ui.MainMenuActivity">
+    android:layout_height="match_parent"
+    tools:context=".ui.MainMenuFragment"
+    android:layout_margin="5dp">
+
 
     <Button
         android:id="@+id/gameOne"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="238dp"
         android:backgroundTint="#F35E5E"
         android:fontFamily="@font/bowlby_one_sc"
         android:text="@string/game_one"
@@ -24,10 +24,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/gameTwo"
         android:layout_width="0dp"
-        android:layout_height="220dp"
+        android:layout_height="238dp"
         android:backgroundTint="#7FD641"
         android:fontFamily="@font/bowlby_one_sc"
         android:text="@string/game_two"
@@ -37,12 +38,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameOne"/>
+        app:layout_constraintTop_toBottomOf="@+id/gameOne" />
+
 
     <Button
         android:id="@+id/gameThree"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="238dp"
         android:backgroundTint="#944CE8"
         android:fontFamily="@font/bowlby_one_sc"
         android:text="@string/game_three"
@@ -53,4 +55,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameTwo" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

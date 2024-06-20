@@ -12,8 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.cognitiveassesmenttest.MainActivity
 import com.example.cognitiveassesmenttest.R
-import com.example.cognitiveassesmenttest.ui.MainMenuActivity
 import com.example.cognitiveassesmenttest.ui.db.MMSEScore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -38,7 +38,7 @@ class SummaryActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+
         auth = FirebaseAuth.getInstance()
         resultText = findViewById(R.id.resultText)
         infoText = findViewById(R.id.infoText)
@@ -50,14 +50,14 @@ class SummaryActivity : AppCompatActivity() {
         saveScoreToFirebase(finalScore)
 
         menuButton.setOnClickListener {
-            val intent = Intent(this, MainMenuActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
 
     private fun setInfoText(finalScore: Int) {
-         diagnosis = when {
+        diagnosis = when {
             finalScore >= 16 -> "no cognitive impairment"
             finalScore in 11..15 -> "mild dementia"
             finalScore in 6..10 -> "moderate dementia"
@@ -92,5 +92,4 @@ class SummaryActivity : AppCompatActivity() {
                 }
         }
     }
-
 }
