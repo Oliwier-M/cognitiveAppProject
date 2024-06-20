@@ -47,7 +47,7 @@ class DrawingActivity : AppCompatActivity() {
         var finalScore = intent.getIntExtra("score", 0)
 
         checkSentenceButton?.setOnClickListener {
-            val sentence = sentenceInput?.text.toString()
+            val sentence = sentenceInput?.text.toString().trim()
 
             if (sentence.equals("Wroclaw", ignoreCase = true)) {
                 Toast.makeText(this, "Answer is valid", Toast.LENGTH_SHORT).show()

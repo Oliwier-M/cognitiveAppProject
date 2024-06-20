@@ -5,15 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mmse.SummaryActivity">
+    tools:context=".ui.hrb.ResultActivity">
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="309dp"
-        android:layout_height="75dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="66dp"
         android:fontFamily="sans-serif"
-        android:text="Mini Mental State Examination finished"
+        android:text="Test finished"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/resultText" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mmseRecycler"
+        android:id="@+id/hrbRecycler"
         android:layout_width="371dp"
         android:layout_height="275dp"
         android:layout_marginTop="91dp"
@@ -63,5 +63,6 @@
         app:cornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mmseRecycler" />
+        app:layout_constraintTop_toBottomOf="@+id/hrbRecycler" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
