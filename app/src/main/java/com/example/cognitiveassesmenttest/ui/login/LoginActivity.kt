@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cognitiveassesmenttest.MainActivity
+import com.example.cognitiveassesmenttest.ui.MainActivity
 import com.example.cognitiveassesmenttest.R
 import com.google.firebase.auth.FirebaseAuth
 

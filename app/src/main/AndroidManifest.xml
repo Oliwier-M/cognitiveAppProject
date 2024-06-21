@@ -73,7 +73,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar"
             android:exported="false" />
 

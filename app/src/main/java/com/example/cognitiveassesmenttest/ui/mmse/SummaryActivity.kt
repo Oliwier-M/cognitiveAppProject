@@ -12,11 +12,18 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.cognitiveassesmenttest.MainActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.cognitiveassesmenttest.ui.MainActivity
 import com.example.cognitiveassesmenttest.R
+import com.example.cognitiveassesmenttest.ui.adapters.ScoreAdapter
 import com.example.cognitiveassesmenttest.ui.db.MMSEScore
+import com.example.cognitiveassesmenttest.ui.interfaces.Score
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -27,6 +34,9 @@ class SummaryActivity : AppCompatActivity() {
     private lateinit var menuButton: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var diagnosis: String
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var scoresList: MutableList<Score>
+    private lateinit var adapter: ScoreAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +53,19 @@ class SummaryActivity : AppCompatActivity() {
         resultText = findViewById(R.id.resultText)
         infoText = findViewById(R.id.infoText)
         menuButton = findViewById(R.id.menuButton)
+        recyclerView = findViewById(R.id.mmseRecycler)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        scoresList = mutableListOf()
+        adapter = ScoreAdapter(scoresList)
+        recyclerView.adapter = adapter
+
         val finalScore = intent.getIntExtra("score", 0)
 
         resultText.text = "Your score: $finalScore/18 points"
         setInfoText(finalScore)
         saveScoreToFirebase(finalScore)
+        fetchScoresFromFirebase()
 
         menuButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -74,13 +92,17 @@ class SummaryActivity : AppCompatActivity() {
             val database = FirebaseDatabase.getInstance()
             val scoresRef = database.getReference("MMSE_scores")
             val scoreId = scoresRef.push().key ?: ""
-            val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-            val userScore = MMSEScore(userId, "$score/18", diagnosis, currentDateTime)
+
+            val currentDateTime = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")
+            val formattedDateTime = currentDateTime.format(formatter)
+
+            val userScore = MMSEScore(userId, "$score/18", diagnosis, formattedDateTime)
 
             scoresRef.child(scoreId).setValue(userScore)
                 .addOnSuccessListener {
                     Log.d("Firebase", "Score successfully saved with ID: $scoreId")
-                    Toast.makeText(this, "Score saved to Firebase!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Score saved", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { exception ->
                     Log.e("Firebase", "Failed to save score", exception)
@@ -90,6 +112,33 @@ class SummaryActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+        }
+    }
+
+    private fun fetchScoresFromFirebase() {
+        val user = auth.currentUser
+        if (user != null) {
+            val userId = user.uid
+            val database = FirebaseDatabase.getInstance()
+            val scoresRef = database.getReference("MMSE_scores")
+
+            scoresRef.orderByChild("userId").equalTo(userId).addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    scoresList.clear()
+                    for (scoreSnapshot in snapshot.children) {
+                        val score = scoreSnapshot.getValue(MMSEScore::class.java)
+                        if (score != null) {
+                            scoresList.add(score)
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("Firebase", "Failed to fetch scores", error.toException())
+                }
+            })
         }
     }
 }
