@@ -1,8 +1,10 @@
 package com.example.cognitiveassesmenttest.ui.db
 
+import com.example.cognitiveassesmenttest.ui.interfaces.Score
+
 data class HRBScore(
-    val userId: String,
-    val score: String,
-    val diagnosis: String,
-    val time: String
-)
+    override val userId: String = "",
+    override val score: String = "",
+    override val diagnosis: String = "",
+    override val time: String = ""
+) : Score

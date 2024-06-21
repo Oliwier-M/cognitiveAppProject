@@ -101,12 +101,12 @@
 
     <TextView
         android:id="@+id/textView11"
-        android:layout_width="328dp"
-        android:layout_height="75dp"
+        android:layout_width="330dp"
+        android:layout_height="87dp"
         android:layout_marginTop="68dp"
         android:fontFamily="sans-serif"
-        android:text="Identify the rule or pattern connecting the shapes. More than one answer can be correct."
-        android:textSize="16sp"
+        android:text="Identify the rule or pattern connecting the shapes. Multiple answers are possible."
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

@@ -9,13 +9,13 @@
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="320dp"
-        android:layout_height="106dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="325dp"
+        android:layout_height="121dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="sans-serif"
         android:text="Next step is to subtract 7 from 100 and then subtract 7 from the result of previous calculation and so on. Please do this 5 times."
         android:textAlignment="viewStart"
-        android:textSize="16dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"

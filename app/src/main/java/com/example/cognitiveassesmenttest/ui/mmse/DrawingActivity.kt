@@ -4,6 +4,8 @@ import android.content.Intent
 import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -18,11 +20,11 @@ import androidx.core.view.isVisible
 import com.example.cognitiveassesmenttest.R
 
 class DrawingActivity : AppCompatActivity() {
-    private var sentenceInput: EditText? = null
-    private var checkSentenceButton: Button? = null
-    private var checkDrawingButton: Button? = null
-    private var pentagon1: ImageView? = null
-    private var pentagon2: ImageView? = null
+    private lateinit var sentenceInput: EditText
+    private lateinit var checkSentenceButton: Button
+    private lateinit var checkDrawingButton: Button
+    private lateinit var pentagon1: ImageView
+    private lateinit var pentagon2: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,28 +42,36 @@ class DrawingActivity : AppCompatActivity() {
         pentagon1 = findViewById(R.id.pentagon1)
         pentagon2 = findViewById(R.id.pentagon2)
 
-        pentagon1?.isVisible = false
-        pentagon2?.isVisible = false
-        checkDrawingButton?.isVisible = false
+        checkSentenceButton.isEnabled = false
+        pentagon1.isVisible = false
+        pentagon2.isVisible = false
+        checkDrawingButton.isVisible = false
 
         var finalScore = intent.getIntExtra("score", 0)
 
-        checkSentenceButton?.setOnClickListener {
-            val sentence = sentenceInput?.text.toString().trim()
-
-            if (sentence.equals("Wroclaw", ignoreCase = true)) {
-                Toast.makeText(this, "Answer is valid", Toast.LENGTH_SHORT).show()
-                finalScore += 1
-            } else {
-                Toast.makeText(this, "Answer is not valid", Toast.LENGTH_SHORT).show()
+        sentenceInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkSentenceButton.isEnabled = s?.isNotEmpty() == true
             }
-            pentagon1?.isVisible = true
-            pentagon2?.isVisible = true
-            checkDrawingButton?.isVisible = true
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        checkSentenceButton.setOnClickListener {
+            val sentence = sentenceInput.text.toString().trim()
+
+            if (sentence.equals("Wroclaw", ignoreCase = true) || sentence.equals("Wrocław", ignoreCase = true)) {
+                Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show()
+                finalScore += 1
+            }
+            pentagon1.isVisible = true
+            pentagon2.isVisible = true
+            checkDrawingButton.isVisible = true
         }
 
 
-        checkDrawingButton?.setOnClickListener {
+        checkDrawingButton.setOnClickListener {
             if (checkIntersectingPentagons()) {
                 Toast.makeText(this, "Pentagons are valid", Toast.LENGTH_SHORT).show()
                 finalScore += 1
@@ -79,7 +89,7 @@ class DrawingActivity : AppCompatActivity() {
             }
         }
 
-        setHorizontalTouchListener(pentagon2!!)
+        setHorizontalTouchListener(pentagon2)
     }
 
     private fun setHorizontalTouchListener(imageView: ImageView) {
@@ -112,9 +122,9 @@ class DrawingActivity : AppCompatActivity() {
     private fun checkIntersectingPentagons(): Boolean {
 
         val rect1 = Rect()
-        pentagon1?.getHitRect(rect1)
+        pentagon1.getHitRect(rect1)
         val rect2 = Rect()
-        pentagon2?.getHitRect(rect2)
+        pentagon2.getHitRect(rect2)
 
         return checkEmbeddedFigure(rect1, rect2)
     }

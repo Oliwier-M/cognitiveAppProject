@@ -5,7 +5,6 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -164,7 +163,6 @@ class SameSoundActivity : AppCompatActivity() {
         if (score == 1) {
             ans1.backgroundTintList = resources.getColorStateList(R.color.green)
             ans2.backgroundTintList = resources.getColorStateList(R.color.green)
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show()
         } else {
             selectedAnswers.forEach {
                 when (it) {
