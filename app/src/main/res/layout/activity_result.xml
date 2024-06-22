@@ -5,19 +5,20 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mmse.SummaryActivity">
+    tools:context=".ui.hrb.ResultActivity">
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="309dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="363dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="sans-serif"
-        android:text="Mini Mental State Examination finished"
+        android:text="Halstead Reitan Battery Test finished"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +26,7 @@
         android:id="@+id/resultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -37,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -44,14 +46,14 @@
         app:layout_constraintTop_toBottomOf="@+id/resultText" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mmseRecycler"
+        android:id="@+id/hrbRecycler"
         android:layout_width="371dp"
         android:layout_height="275dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/menuButton"
@@ -64,17 +66,18 @@
         app:cornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mmseRecycler" />
+        app:layout_constraintTop_toBottomOf="@+id/hrbRecycler" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Your previous results:"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.144"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

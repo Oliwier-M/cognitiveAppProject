@@ -15,10 +15,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CognitiveAssesmentTest"
         tools:targetApi="34">
+        
+        <activity
+            android:name=".ui.hrb.SentenceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.NamingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.SpeechSoundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.SameSoundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.hrb.ShapeActivity"
+            android:exported="false" />
+
         <activity
             android:name=".ui.gameone.TrailMakingTestActivity"
             android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar"
             android:exported="false" />
+        
         <activity
             android:name=".ui.mmse.SummaryActivity"
             android:exported="false" />
@@ -52,7 +73,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar"
             android:exported="false" />
 

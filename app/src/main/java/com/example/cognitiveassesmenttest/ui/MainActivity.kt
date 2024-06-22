@@ -1,4 +1,4 @@
-package com.example.cognitiveassesmenttest
+package com.example.cognitiveassesmenttest.ui
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
@@ -7,6 +7,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import com.example.cognitiveassesmenttest.R
 import com.example.cognitiveassesmenttest.databinding.ActivityMainBinding
 import java.util.logging.Handler
 

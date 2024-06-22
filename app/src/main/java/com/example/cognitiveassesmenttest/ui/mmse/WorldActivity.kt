@@ -4,17 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
 import com.example.cognitiveassesmenttest.R
 
 class WorldActivity : AppCompatActivity() {
 
-    private var worldBackward: EditText? = null
-    private var checkButton: Button? = null
+    private lateinit var worldBackward: EditText
+    private lateinit var checkButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +29,14 @@ class WorldActivity : AppCompatActivity() {
         worldBackward = findViewById(R.id.revWorldText)
         checkButton = findViewById(R.id.checkButton)
         var finalScore = intent.getIntExtra("score", 0)
+        checkButton.isEnabled = false
 
-        checkButton?.setOnClickListener {
-            val backward = worldBackward?.text.toString().trim().uppercase()
+        worldBackward.addTextChangedListener {
+            checkButton.isEnabled = it.toString().isNotBlank()
+        }
+
+        checkButton.setOnClickListener {
+            val backward = worldBackward.text.toString().trim().uppercase()
 
             if (backward.isBlank()) {
                 return@setOnClickListener
@@ -43,6 +48,7 @@ class WorldActivity : AppCompatActivity() {
             intent.putExtra("score", finalScore)
             Thread.sleep(2000)
             startActivity(intent)
+            finish()
         }
     }
 

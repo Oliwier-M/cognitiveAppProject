@@ -9,11 +9,11 @@
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="288dp"
-        android:layout_height="71dp"
+        android:layout_width="299dp"
+        android:layout_height="84dp"
         android:layout_marginTop="84dp"
         android:text="Do you remember three words from the beginning of the test? Type them."
-        android:textSize="16sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
