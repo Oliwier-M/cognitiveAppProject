@@ -66,7 +66,7 @@ class SummaryActivity : AppCompatActivity() {
         setInfoText(finalScore)
         saveScoreToFirebase(finalScore)
         fetchScoresFromFirebase()
-
+        
         menuButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

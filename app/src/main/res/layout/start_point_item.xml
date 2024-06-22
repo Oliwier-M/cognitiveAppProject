@@ -7,12 +7,11 @@
     tools:ignore="ExtraText">
 
     <ImageButton
-        android:id="@+id/pointButton"
+        android:id="@+id/startPointButton"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_margin="2dp"
-        android:background="@drawable/roundedbutton"
-        android:clickable="true"
+        android:background="@drawable/startbutton"
         android:contentDescription="@string/point"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +27,7 @@
         android:gravity="center"
         android:text="30"
         android:textAlignment="center"
-        android:textColor="#484688"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

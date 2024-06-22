@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/trail_test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4E768"
     android:orientation="vertical"
     tools:context=".ui.gameone.TrailMakingTestActivity">
 
@@ -17,27 +18,29 @@
 
         <Button
             android:id="@+id/backButton"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             android:fontFamily="@font/bowlby_one_sc"
             android:text="@string/back"
+            android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/start"
+            android:layout_marginStart="20dp"
             android:background="?attr/colorPrimary"
             android:fontFamily="@font/bowlby_one_sc"
-            android:textSize="16sp"
-            android:layout_marginStart="20dp"/>
+            android:text="@string/start"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
 
         <View
-            android:layout_width="120dp"
+            android:layout_width="80dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
@@ -46,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="20dp"
-            android:gravity="center"
+            android:fontFamily="@font/baloo_tammudu"
             android:text="@string/timeFormat"
             android:textColor="@color/white"
             android:textSize="30sp" />
@@ -57,17 +60,16 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="@color/white" />
+        android:layout_margin="5dp" >
 
-<!--    <androidx.gridlayout.widget.GridLayout-->
-<!--        android:id="@+id/grid"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:columnCount="10"-->
-<!--        app:rowCount="15"-->
-<!--        app:columnOrderPreserved="true"-->
-<!--        app:rowOrderPreserved="true">-->
+        <ImageView
+            android:id="@+id/bitmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    </androidx.gridlayout.widget.GridLayout>-->
 </LinearLayout>

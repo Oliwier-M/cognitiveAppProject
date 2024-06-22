@@ -22,6 +22,14 @@ import com.google.firebase.FirebaseApp
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
     private val binding get() = _binding!!
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): MainMenuFragment {
+            return MainMenuFragment()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
