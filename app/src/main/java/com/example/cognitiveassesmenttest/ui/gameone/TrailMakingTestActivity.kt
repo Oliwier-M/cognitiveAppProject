@@ -2,13 +2,18 @@ package com.example.cognitiveassesmenttest.ui.gameone
 
 import Timer
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Button
-import androidx.gridlayout.widget.GridLayout
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,74 +23,123 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
 import com.example.cognitiveassesmenttest.ui.MainMenuFragment
-import org.w3c.dom.Text
+import kotlin.math.pow
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  {
     private lateinit var timerText: TextView
     private lateinit var timerUtil: Timer
     private lateinit var start: Button
-    private var gameStarted: Boolean = false
-
-
     private lateinit var constraintLayout: ConstraintLayout
+    private lateinit var mImageView: ImageView
+    private lateinit var timeScore : CharSequence
 
+    private lateinit var mCanvas: Canvas
+    private lateinit var mBitmap: Bitmap
+    private val mPaint = Paint()
+
+    private var gameStarted = false
+    private var game = 1
+    private var lastNumber: Any = 0
+
+    private var mStartX = 0F
+    private var mStartY = 0F
+    private var mStopX = 0F
+    private var mStopY = 0F
+
+    private val placedItems = mutableListOf<Triple<Any, Int, Int>>()
+
+    private var scoreA = 0
+    private var scoreB = 0
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_trail_making_test)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.trail_test)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         constraintLayout = findViewById(R.id.constraintLayout)
-
-
-
-
+        mImageView = findViewById(R.id.bitmapView)
         val back = findViewById<Button>(R.id.backButton)
         start = findViewById(R.id.startButton)
+
+        var width : Int
+        var height : Int
+
+        constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                constraintLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                width = constraintLayout.width
+                height = constraintLayout.height
+                Log.d("DIMENSIONSLAYOUT", "w: $width, h: $height")
+
+                mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                mCanvas = Canvas(mBitmap)
+                mCanvas.drawColor(Color.TRANSPARENT)
+                mImageView.setImageBitmap(mBitmap)
+            }
+        })
+
+        mPaint.color = Color.BLACK
+        mPaint.style = Paint.Style.STROKE
+        mPaint.strokeWidth = 20F
+        mPaint.isAntiAlias = true
 
         timerText = findViewById(R.id.timeTextView)
         timerUtil = Timer(this)
         timerUtil.stopTimer()
 
-
-        back.setOnClickListener{
-            val intent = Intent(this, MainMenuFragment::class.java)
-            startActivity(intent)
+        back.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, MainMenuFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
         }
 
-        var game: Int = 1
         start.setOnClickListener{
+            val gameOne: List<Int> = (1..20).toList()
+            val numbers: List<Int> = (1..10).toList()
+            val letters: List<Char> = ('A'..'J').toList()
+            val gameTwo: List<Any> = numbers.zip(letters).flatMap { (num, char) ->
+                listOf(num, char)
+            }
+
             start.isEnabled = false
-            toggleTimer()
 
-
-            addItemsRandomly(20)
-
-//            when(game){
-//                1 -> partA()
-//                2 -> partB()
-//            }
-
-
+            if(game%2 == 1){
+                addItemsRandomly(gameOne)
+            }else{
+                addItemsRandomly(gameTwo)
+            }
         }
-
     }
 
+    private fun calculateScore(timeScore: CharSequence): Int{
+        val timeParts = timeScore.split(":")
+        val minutes = timeParts[0].toInt()
+        val seconds = timeParts[1].toInt()
+        val score = minutes * 60 + seconds
 
-    private fun addItemsRandomly(itemCount: Int) {
+        return score
+    }
+
+    private fun addItemsRandomly(itemList: List<Any>) {
         val inflater = LayoutInflater.from(this)
-        val placedItems = mutableSetOf<Pair<Int, Int>>()
-        val itemSize = 60 // Width and height of the item
+        val itemSize = 100 // diameter
+        val margin = 40
+        val radius = (2 * itemSize) + margin
 
-        for (i in 1 .. itemCount) {
-            val itemView = inflater.inflate(R.layout.point_item, constraintLayout, false)
+        for (i in itemList) {
+            val itemView: View = if (i == 1){
+                inflater.inflate(R.layout.start_point_item, constraintLayout, false)
+            } else {
+                inflater.inflate(R.layout.point_item, constraintLayout, false)
+            }
 
             // Set the text of the TextView
             val pointNumber = itemView.findViewById<TextView>(R.id.pointNumber)
@@ -94,87 +148,103 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
             var randomX: Int
             var randomY: Int
             var isOverlapping: Boolean
+            var tooFar: Boolean
+            var tooClose: Boolean
 
             do {
-                randomX = Random.nextInt(constraintLayout.width - itemSize)
-                randomY = Random.nextInt(constraintLayout.height - itemSize)
-                isOverlapping = placedItems.any { (x, y) ->
-                    Math.abs(x - randomX) < itemSize && Math.abs(y - randomY) < itemSize
-                }
-            } while (isOverlapping)
+                randomX = Random.nextInt(constraintLayout.width - radius)
+                randomY = Random.nextInt(constraintLayout.height - radius)
 
-            placedItems.add(Pair(randomX, randomY))
+                if(i != 1) {
+                    val (_, x, y) = placedItems.last()
+
+                    isOverlapping = placedItems.any { (_, x, y) ->
+                        sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) <= radius
+                    }
+                    tooFar = sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) >= (10 * radius)
+                    tooClose = sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) >= (2 * radius)
+                }else{
+                    isOverlapping = false
+                    tooFar = false
+                    tooClose = false
+                }
+
+            } while (isOverlapping || tooFar || tooClose)
+
+            placedItems.add(Triple(i, randomX, randomY))
 
             // Add the item to the ConstraintLayout
             itemView.id = View.generateViewId()
             constraintLayout.addView(itemView)
 
             // Apply constraints
-            val constraintSet = ConstraintSet().apply {
+            ConstraintSet().apply {
                 clone(constraintLayout)
                 connect(itemView.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, randomX)
                 connect(itemView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, randomY)
                 applyTo(constraintLayout)
             }
+
+            val item = if(i==1) {
+                itemView.findViewById(R.id.startPointButton)
+            }else{
+                itemView.findViewById<ImageButton>(R.id.pointButton)
+            }
+
+            item.setOnClickListener {
+                Log.d("CLICKEDBUTTON", "clidked: $i")
+                onPointClicked(i, randomX.toFloat(), randomY.toFloat(), itemList)
+            }
         }
     }
 
+    private fun onPointClicked(pointNumber: Any, x: Float, y: Float, items: List<Any>) {
+        if (pointNumber == 1 || isPointValid(pointNumber, lastNumber, items)) {
+            Log.d("POINTCOORDINATES", "before assigned line start: x: $mStartX, y: $mStartY || line end: x: $mStopX, y: $mStopY")
+            when (pointNumber) {
+                1 -> {
+                    toggleTimer()
+                    Log.d("GAMESTATUS", "Game started")
+                    mStartX = (x + 103.5).toFloat()
+                    mStartY = (y + 103.5).toFloat()
+                }
+                in items.subList(1, items.size - 1) ->{
+                    mStopX = (x + 103.5).toFloat()
+                    mStopY = (y + 103.5).toFloat()
 
+                    mCanvas.drawLine(mStartX, mStartY, mStopX, mStopY, mPaint)
+                    Log.d("POINTCOORDINATES", "line start: x: $mStartX, y: $mStartY || line end: x: $mStopX, y: $mStopY")
+                    mImageView.setImageBitmap(mBitmap)
 
+                    mStartX = mStopX
+                    mStartY = mStopY
+                }
+                items.last() -> {
+                    mStopX = (x + 103.5).toFloat()
+                    mStopY = (y + 103.5).toFloat()
 
-    @SuppressLint("InflateParams")
-    private fun createPointView(text: String, context: Context): View {
-        // Inflate the point item layout
-        val pointView = LayoutInflater.from(context).inflate(R.layout.point_item, null)
+                    mCanvas.drawLine(mStartX, mStartY, mStopX, mStopY, mPaint)
+                    mImageView.setImageBitmap(mBitmap)
 
-        // Set the text on the TextView inside the point item layout
-        val pointTextView: TextView = pointView.findViewById(R.id.pointNumber)
-        pointTextView.text = text
+                    start.isEnabled = true
+                    toggleTimer()
+                    game++
+                    timeScore = timerText.text.toString()
 
-        return pointView
+                    if (game%2 == 1){
+                        scoreA = calculateScore(timeScore)
+                    }else{
+                        scoreB = calculateScore(timeScore)
+                    }
+                }
+            }
+            lastNumber = pointNumber
+        }
     }
 
-
-    // PART A
-//    private fun partA(){
-//        // amount of points = 25
-//        val n = 25
-//        val gridLayout: GridLayout = findViewById(R.id.grid)
-//
-//        // Set to keep track of occupied positions
-//        val occupiedPositions = mutableSetOf<Pair<Int, Int>>()
-//
-//        for (i in 1..n){
-//            var column: Int
-//            var row: Int
-//            var position: Pair<Int, Int>
-//
-//            do {
-//                column = Random.nextInt(0, gridLayout.columnCount)
-//                row = Random.nextInt(0,gridLayout.rowCount)
-//                position = Pair(row, column)
-//            } while (occupiedPositions.contains(position))
-//
-//            // Mark the position as occupied
-//            occupiedPositions.add(position)
-//
-//            val pointView = createPointView(i.toString(), this)
-//
-//            val param = GridLayout.LayoutParams()
-//            param.rowSpec = GridLayout.spec(row, 1)
-//            param.columnSpec = GridLayout.spec(column, 1)
-//            param.width = GridLayout.LayoutParams.WRAP_CONTENT
-//            param.height = GridLayout.LayoutParams.WRAP_CONTENT
-//
-//            gridLayout.addView(pointView, param)
-//
-//        }
-//    }
-
-    // PART B
-    // amount of points = 12 numbers and 12 letters
-    private fun partB(){
-
+    private fun isPointValid(pointNumber: Any, lastNumber: Any, items: List<Any>): Boolean{
+        val index = items.indexOf(pointNumber)
+        return items[index-1] == lastNumber
     }
 
     private fun toggleTimer() {
@@ -186,18 +256,9 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         gameStarted = !gameStarted
     }
 
-
-//    override fun onResume() {
-//        super.onResume()
-//        timerUtil.startTimer() // Start the timer when the activity resumes
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        timerUtil.stopTimer() // Stop the timer when the activity is paused
-//    }
-
     override fun onTimeUpdate(time: String?) {
         timerText.text = time
     }
+
 }
+
