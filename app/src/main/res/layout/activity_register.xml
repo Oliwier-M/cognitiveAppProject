@@ -27,18 +27,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:ems="10"
-        android:hint="email"
+        android:hint="@string/email"
+        android:importantForAutofill="no"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        tools:ignore="TextFields" />
 
     <EditText
         android:id="@+id/usernameInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="username"
+        android:hint="@string/username"
+        android:importantForAutofill="no"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginBottom="60dp"
-        android:text="Already have an account?"
+        android:text="@string/already_have_an_account"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="87dp"
         android:layout_marginBottom="60dp"
-        android:text="Log in"
+        android:text="@string/log_in"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +78,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/bowlby_one_sc"
-        android:text="Sign in"
+        android:text="@string/sign_in"
         android:textSize="20sp"
         app:cornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,22 +91,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password"
+        android:importantForAutofill="no"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameInput" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameInput"
+        tools:ignore="TextFields" />
 
     <EditText
         android:id="@+id/repPasswordInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="repeat password"
+        android:hint="@string/repeat_password"
+        android:importantForAutofill="no"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordInput"
+        tools:ignore="TextFields" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

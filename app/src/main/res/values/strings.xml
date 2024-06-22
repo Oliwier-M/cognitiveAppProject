@@ -22,4 +22,14 @@
     <string name="back">Back</string>
     <string name="timeFormat">00:00</string>
     <string name="start">start</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_in">Sign in</string>
+    <string name="password">password</string>
+    <string name="repeat_password">repeat password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="username">username</string>
+    <string name="email">email</string>
+    <string name="welcome_to_cognitiveapp">Welcome to CognitiveApp!</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
 </resources>

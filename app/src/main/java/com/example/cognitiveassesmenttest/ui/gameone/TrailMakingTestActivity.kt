@@ -2,6 +2,7 @@ package com.example.cognitiveassesmenttest.ui.gameone
 
 import Timer
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -22,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
+import com.example.cognitiveassesmenttest.ui.MainActivity
 import com.example.cognitiveassesmenttest.ui.MainMenuFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -103,10 +105,12 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         timerUtil.stopTimer()
 
         back.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, MainMenuFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+//            supportFragmentManager.beginTransaction().apply {  }
+//                .replace(R.id.nav_host_fragment_content_main, MainMenuFragment())
+//                .addToBackStack(null)
+//                .commit()
         }
 
         start.setOnClickListener{
@@ -136,7 +140,7 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         val seconds = timeParts[1].toInt()
         val score = minutes * 60 + seconds
 
-        // save into firebase straight from here
+        // TODO: save into firebase straight from here
         return score
     }
 
