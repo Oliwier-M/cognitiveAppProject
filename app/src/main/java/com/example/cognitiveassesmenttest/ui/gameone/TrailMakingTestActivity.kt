@@ -23,6 +23,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
 import com.example.cognitiveassesmenttest.ui.MainMenuFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -42,6 +48,7 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
     private var gameStarted = false
     private var game = 1
     private var lastNumber: Any = 0
+    private var size = 0
 
     private var mStartX = 0F
     private var mStartY = 0F
@@ -68,20 +75,21 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         val back = findViewById<Button>(R.id.backButton)
         start = findViewById(R.id.startButton)
 
-        var width : Int
-        var height : Int
 
         constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 constraintLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                width = constraintLayout.width
-                height = constraintLayout.height
-                Log.d("DIMENSIONSLAYOUT", "w: $width, h: $height")
+                CoroutineScope(Dispatchers.IO).launch {
+                    val width = constraintLayout.width
+                    val height = constraintLayout.height
+                    mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                    mCanvas = Canvas(mBitmap)
+                    mCanvas.drawColor(Color.TRANSPARENT)
 
-                mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                mCanvas = Canvas(mBitmap)
-                mCanvas.drawColor(Color.TRANSPARENT)
-                mImageView.setImageBitmap(mBitmap)
+                    withContext(Dispatchers.Main) {
+                        mImageView.setImageBitmap(mBitmap)
+                    }
+                }
             }
         })
 
@@ -102,19 +110,22 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         }
 
         start.setOnClickListener{
-            val gameOne: List<Int> = (1..20).toList()
-            val numbers: List<Int> = (1..10).toList()
-            val letters: List<Char> = ('A'..'J').toList()
-            val gameTwo: List<Any> = numbers.zip(letters).flatMap { (num, char) ->
-                listOf(num, char)
-            }
-
             start.isEnabled = false
 
-            if(game%2 == 1){
-                addItemsRandomly(gameOne)
-            }else{
-                addItemsRandomly(gameTwo)
+            CoroutineScope(Dispatchers.IO).launch {
+                val gameOne: List<Int> = (1..20).toList()
+                val numbers: List<Int> = (1..10).toList()
+                val letters: List<Char> = ('A'..'J').toList()
+                val gameTwo: List<Any> = numbers.zip(letters).flatMap { (num, char) ->
+                    listOf(num, char)
+                }
+
+                val items = if (game % 2 == 1) gameOne else gameTwo
+                addItemsRandomly(items)
+
+                withContext(Dispatchers.Main) {
+                    start.isEnabled = true
+                }
             }
         }
     }
@@ -125,14 +136,12 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         val seconds = timeParts[1].toInt()
         val score = minutes * 60 + seconds
 
+        // save into firebase straight from here
         return score
     }
 
     private fun addItemsRandomly(itemList: List<Any>) {
         val inflater = LayoutInflater.from(this)
-        val itemSize = 100 // diameter
-        val margin = 40
-        val radius = (2 * itemSize) + margin
 
         for (i in itemList) {
             val itemView: View = if (i == 1){
@@ -141,90 +150,116 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
                 inflater.inflate(R.layout.point_item, constraintLayout, false)
             }
 
-            // Set the text of the TextView
-            val pointNumber = itemView.findViewById<TextView>(R.id.pointNumber)
-            pointNumber.text = i.toString()
-
-            var randomX: Int
-            var randomY: Int
-            var isOverlapping: Boolean
-            var tooFar: Boolean
-            var tooClose: Boolean
-
-            do {
-                randomX = Random.nextInt(constraintLayout.width - radius)
-                randomY = Random.nextInt(constraintLayout.height - radius)
-
-                if(i != 1) {
-                    val (_, x, y) = placedItems.last()
-
-                    isOverlapping = placedItems.any { (_, x, y) ->
-                        sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) <= radius
-                    }
-                    tooFar = sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) >= (10 * radius)
-                    tooClose = sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) >= (2 * radius)
-                }else{
-                    isOverlapping = false
-                    tooFar = false
-                    tooClose = false
-                }
-
-            } while (isOverlapping || tooFar || tooClose)
-
-            placedItems.add(Triple(i, randomX, randomY))
-
-            // Add the item to the ConstraintLayout
-            itemView.id = View.generateViewId()
-            constraintLayout.addView(itemView)
-
-            // Apply constraints
-            ConstraintSet().apply {
-                clone(constraintLayout)
-                connect(itemView.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, randomX)
-                connect(itemView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, randomY)
-                applyTo(constraintLayout)
-            }
-
             val item = if(i==1) {
                 itemView.findViewById(R.id.startPointButton)
             }else{
                 itemView.findViewById<ImageButton>(R.id.pointButton)
             }
 
+            item.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    item.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        size = item.width
+                        Log.d("ITEMSIZE", "point size: $size")
+                    }
+                }
+            })
+
+            // Set the text of the TextView
+            val pointNumber = itemView.findViewById<TextView>(R.id.pointNumber)
+            pointNumber.text = i.toString()
+
+            var attempts = 0
+            var m = 2.2
+
+            var randomX: Int
+            var randomY: Int
+            var tooFar: Boolean
+            var tooClose: Boolean
+            var onLine: Boolean
+
+            do {
+                attempts++
+                if(attempts > 100){
+                    m += 0.1
+                    attempts = 0
+                }
+
+                val d = size * sqrt(2.0)
+
+                if(i== 1){
+                    randomX = Random.nextInt(constraintLayout.width/2)
+                    randomY = Random.nextInt(constraintLayout.height/2)
+                }else {
+                    randomX = Random.nextInt(constraintLayout.width - (1.5 * size).toInt())
+                    randomY = Random.nextInt(constraintLayout.height - (1.5 * size).toInt())
+                }
+
+                if(i != 1) {
+                    val (_, x, y) = placedItems.last()
+
+                    tooClose = placedItems.any { (_, x, y) ->
+                        sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) <= d
+                    }
+                    tooFar = sqrt((randomX - x).toDouble().pow(2.0) + (randomY - y).toDouble().pow(2.0)) >= (m * d)
+                }else{
+                    tooFar = false
+                    tooClose = false
+                }
+
+            } while (tooFar || tooClose)
+
+            placedItems.add(Triple(i, randomX, randomY))
+            m = 2.2
+
+            runOnUiThread {
+                itemView.id = View.generateViewId()
+                constraintLayout.addView(itemView)
+
+                // Apply constraints on the UI thread
+                ConstraintSet().apply {
+                    clone(constraintLayout)
+                    connect(itemView.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, randomX)
+                    connect(itemView.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, randomY)
+                    applyTo(constraintLayout)
+                }
+            }
+
             item.setOnClickListener {
-                Log.d("CLICKEDBUTTON", "clidked: $i")
-                onPointClicked(i, randomX.toFloat(), randomY.toFloat(), itemList)
+                CoroutineScope(Dispatchers.Main).launch {
+                    Log.d("CLICKEDBUTTON", "clidked: $i")
+                    onPointClicked(i, randomX.toFloat(), randomY.toFloat(), itemList, size)
+                }
             }
         }
     }
 
-    private fun onPointClicked(pointNumber: Any, x: Float, y: Float, items: List<Any>) {
+    private suspend  fun onPointClicked(pointNumber: Any, x: Float, y: Float, items: List<Any>, size: Int) {
+        val d = size/2
         if (pointNumber == 1 || isPointValid(pointNumber, lastNumber, items)) {
             Log.d("POINTCOORDINATES", "before assigned line start: x: $mStartX, y: $mStartY || line end: x: $mStopX, y: $mStopY")
             when (pointNumber) {
                 1 -> {
                     toggleTimer()
                     Log.d("GAMESTATUS", "Game started")
-                    mStartX = (x + 103.5).toFloat()
-                    mStartY = (y + 103.5).toFloat()
+                    mStartX = (x + d)
+                    mStartY = (y + d)
                 }
                 in items.subList(1, items.size - 1) ->{
-                    mStopX = (x + 103.5).toFloat()
-                    mStopY = (y + 103.5).toFloat()
+                    mStopX = (x + d)
+                    mStopY = (y + d)
 
-                    mCanvas.drawLine(mStartX, mStartY, mStopX, mStopY, mPaint)
-                    Log.d("POINTCOORDINATES", "line start: x: $mStartX, y: $mStartY || line end: x: $mStopX, y: $mStopY")
-                    mImageView.setImageBitmap(mBitmap)
+                    drawLineOnCanvas(mStartX, mStartY, mStopX, mStopY)
 
                     mStartX = mStopX
                     mStartY = mStopY
                 }
                 items.last() -> {
-                    mStopX = (x + 103.5).toFloat()
-                    mStopY = (y + 103.5).toFloat()
+                    mStopX = (x + d)
+                    mStopY = (y + d)
 
-                    mCanvas.drawLine(mStartX, mStartY, mStopX, mStopY, mPaint)
-                    mImageView.setImageBitmap(mBitmap)
+                    drawLineOnCanvas(mStartX, mStartY, mStopX, mStopY)
 
                     start.isEnabled = true
                     toggleTimer()
@@ -239,6 +274,15 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
                 }
             }
             lastNumber = pointNumber
+        }
+    }
+
+    private suspend fun drawLineOnCanvas(startX: Float, startY: Float, stopX: Float, stopY: Float) {
+        withContext(Dispatchers.IO) {
+            mCanvas.drawLine(startX, startY, stopX, stopY, mPaint)
+        }
+        withContext(Dispatchers.Main) {
+            mImageView.setImageBitmap(mBitmap)
         }
     }
 
@@ -257,7 +301,9 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
     }
 
     override fun onTimeUpdate(time: String?) {
-        timerText.text = time
+        runOnUiThread {
+            timerText.text = time
+        }
     }
 
 }
