@@ -9,6 +9,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
 
+/**
+ * Activity for the Shape question. The user is presented with four shapes and must recognize the mutual characteristics of them.
+ * The user must select the shapes that have the same characteristics and then press the check button to see if they are correct.
+ * The user is then taken to the next question.
+ */
 class ShapeActivity : AppCompatActivity() {
 
     private lateinit var ans1: Button
@@ -17,6 +22,9 @@ class ShapeActivity : AppCompatActivity() {
     private lateinit var ans4: Button
     private lateinit var checkButton: Button
 
+    /**
+     * Called when the activity is starting. Sets up the UI and click listeners for the buttons.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -62,7 +70,9 @@ class ShapeActivity : AppCompatActivity() {
             }, 1500)
         }
     }
-
+    /**
+     * Called when the user clicks on an answer button. Toggles the button's selected state and updates the check button state.
+     */
     private fun handleAnswerClick(button: Button?) {
         button?.let {
             it.isSelected = !it.isSelected
@@ -74,11 +84,15 @@ class ShapeActivity : AppCompatActivity() {
         }
         updateCheckButtonState()
     }
-
+    /**
+     * Updates the state of the check button based on the selected state of the answer buttons.
+     */
     private fun updateCheckButtonState() {
         checkButton.isEnabled = ans1.isSelected || ans2.isSelected || ans3.isSelected || ans4.isSelected
     }
-
+    /**
+     * Checks the selected answers and returns the score.
+     */
     private fun checkAnswers(): Int {
         val selectedAnswers = mutableListOf<Int>()
 

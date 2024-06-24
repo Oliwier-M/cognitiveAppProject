@@ -11,11 +11,20 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.cognitiveassesmenttest.R
 
+/**
+ * WorldActivity is an activity that displays the World Activity of the MMSE test.
+ * The user is asked to write the word "WORLD" backwards.
+ * The user is scored based on the correctness of the word.
+ */
 class WorldActivity : AppCompatActivity() {
 
     private lateinit var worldBackward: EditText
     private lateinit var checkButton: Button
 
+    /**
+     * onCreate is called when the activity is starting.
+     * @param savedInstanceState is a reference to a Bundle object that is passed into the onCreate method of every Android Activity.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,7 +60,11 @@ class WorldActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    /**
+     * checkAnswers checks the correctness of the word "WORLD" written backwards.
+     * @param backward The word "WORLD" written backwards.
+     * @return The score based on the correctness of the word.
+     */
     private fun checkAnswers(backward: String): Int {
         val correctRevWorld = "DLROW"
         val score: Int

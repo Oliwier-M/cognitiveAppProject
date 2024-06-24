@@ -15,6 +15,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
 import com.google.firebase.storage.FirebaseStorage
 
+/**
+ * Naming Activity shows four objects and asks the user to name them.
+ * The user is given a score based on the number of correct answers.
+ */
 class NamingActivity : AppCompatActivity() {
 
     private lateinit var imageView1: ImageView
@@ -27,6 +31,10 @@ class NamingActivity : AppCompatActivity() {
     private lateinit var edit4: EditText
     private lateinit var checkButton: Button
 
+    /**
+     * Creates the Naming Activity
+     * @param savedInstanceState the saved instance state
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -101,6 +109,10 @@ class NamingActivity : AppCompatActivity() {
         checkButton.isEnabled = false
     }
 
+    /**
+     * Checks the user's answers and returns the score
+     * @return the score
+     */
     private fun checkAnswers() : Int {
         val answers = listOf(
             Pair(edit1, "pencil"),

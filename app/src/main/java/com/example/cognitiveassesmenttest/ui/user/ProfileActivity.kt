@@ -22,7 +22,14 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
+
+/**
+ * Profile activity displays user data and enables managing the data.
+ *
+ * @constructor Create Profile activity
+ */
 class ProfileActivity : AppCompatActivity() {
+
     private lateinit var username: EditText
     private lateinit var name: EditText
     private lateinit var surname: EditText
@@ -76,6 +83,10 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Fetch user data from the realtime database
+     *
+     */
     private fun fetchUserData() {
         val database = Firebase.database
         val userRef = database.getReference("users").child(Firebase.auth.currentUser!!.uid)
@@ -96,6 +107,11 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Enable editing of textFields of user's data.
+     *
+     * @param enable
+     */
     private fun enableEditing(enable: Boolean) {
         username.isEnabled = enable
         name.isEnabled = enable
@@ -105,6 +121,10 @@ class ProfileActivity : AppCompatActivity() {
         updateButton.visibility = if (enable) View.VISIBLE else View.GONE
     }
 
+    /**
+     * Update user profile in the database
+     *
+     */
     private fun updateUserProfile() {
         val database = Firebase.database
         val userRef = database.getReference("users").child(Firebase.auth.currentUser!!.uid)
@@ -118,6 +138,10 @@ class ProfileActivity : AppCompatActivity() {
         enableEditing(false)
     }
 
+    /**
+     * Delete user from database and authentication
+     *
+     */
     private fun deleteUserFromDatabase() {
         val database = Firebase.database
         val userRef = database.getReference("users").child(Firebase.auth.currentUser!!.uid)
@@ -126,18 +150,30 @@ class ProfileActivity : AppCompatActivity() {
         Firebase.auth.currentUser!!.delete()
     }
 
+    /**
+     * Delete scores for user id from the database
+     *
+     */
     private fun deleteScoresForUserId() {
         val database = Firebase.database
         val scoresRef = database.getReference("scores").child(Firebase.auth.currentUser!!.uid)
         scoresRef.removeValue()
     }
 
+    /**
+     * Move to login activity by intent
+     *
+     */
     private fun moveToLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
 
+    /**
+     * Alert dialog for deleting a user with confirmation
+     *
+     */
     private fun alertDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Delete Account")
@@ -150,6 +186,10 @@ class ProfileActivity : AppCompatActivity() {
         builder.show()
     }
 
+    /**
+     * Logout dialog with confirmation for logging out
+     *
+     */
     private fun logoutDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Logout")

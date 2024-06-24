@@ -12,6 +12,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
 
+/**
+ * Activity for the calculation screen.
+ * The user is asked to subtract 7 from 100 and then subtract 7 from the result, and so on.
+ * The user is scored based on the number of correct answers.
+ */
 class CalculationActivity : AppCompatActivity() {
     private lateinit var editFirst: EditText
     private lateinit var editSecond: EditText
@@ -20,6 +25,10 @@ class CalculationActivity : AppCompatActivity() {
     private lateinit var editFifth: EditText
     private lateinit var checkButton: Button
 
+    /**
+     * Creates the view for the calculation screen.
+     * @param savedInstanceState The saved instance state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -77,6 +86,10 @@ class CalculationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Checks if all the fields are filled.
+     * @return True if all the fields are filled, false otherwise.
+     */
     private fun areAllFieldsFilled(): Boolean {
         return editFirst.text.isNotBlank() &&
                 editSecond.text.isNotBlank() &&
@@ -85,6 +98,15 @@ class CalculationActivity : AppCompatActivity() {
                 editFifth.text.isNotBlank()
     }
 
+    /**
+     * Checks the answers given by the user.
+     * @param first The answer to the first question.
+     * @param second The answer to the second question.
+     * @param third The answer to the third question.
+     * @param fourth The answer to the fourth question.
+     * @param fifth The answer to the fifth question.
+     * @return The score of the user based on their answer.
+     */
     private fun checkAnswers(
         first: String,
         second: String,

@@ -156,6 +156,10 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * Adds a user to the Firebase realtime database.
+     * @param userId The user's id.
+     */
     private fun addUserToFirebase(userId: String?) {
         val database = Firebase.database
         val usersRef = database.getReference("users")

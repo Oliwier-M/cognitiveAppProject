@@ -21,6 +21,12 @@ import androidx.core.view.isVisible
 import com.example.cognitiveassesmenttest.R
 import java.util.*
 
+/**
+ * RepetitionActivity is an activity that displays the Repetition Activity of the MMSE test.
+ * The user is asked to repeat 3 words: Monkey, apple, shelf.
+ * The user is scored based on the number of words they repeat correctly.
+ * they have 5 attempts to repeat the words correctly, but only first record is scored.
+ */
 class RepetitionActivity : AppCompatActivity(), RecognitionListener {
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var speechRecognizer: SpeechRecognizer
@@ -96,6 +102,12 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
 
     }
 
+    /**
+     * onRequestPermissionsResult is called when the user responds to the permission request.
+     * @param requestCode is the request code passed to requestPermissions.
+     * @param permissions is the requested permissions.
+     * @param grantResults is the grant results for the corresponding permissions.
+     */
     private fun setupSpeechRecognition() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
         speechRecognizer.setRecognitionListener(this)
@@ -106,6 +118,12 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
         }
     }
 
+    /**
+     * onRequestPermissionsResult is called when the user responds to the permission request.
+     * @param requestCode is the request code passed to requestPermissions.
+     * @param permissions is the requested permissions.
+     * @param grantResults is the grant results for the corresponding permissions.
+     */
     private fun startListening() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -135,6 +153,10 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
     override fun onEndOfSpeech() {
     }
 
+    /**
+     * onError is called when the recognition fails.
+     * @param error is the error code.
+     */
     override fun onError(error: Int) {
         val errorMessage = when (error) {
             SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
@@ -151,6 +173,11 @@ class RepetitionActivity : AppCompatActivity(), RecognitionListener {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * onResults is called when the recognition is successful.
+     * @param results is the recognition results.
+     * The user is scored based on the number of sentences they repeat correctly.
+     */
     override fun onResults(results: Bundle?) {
         val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
         var score = 0
