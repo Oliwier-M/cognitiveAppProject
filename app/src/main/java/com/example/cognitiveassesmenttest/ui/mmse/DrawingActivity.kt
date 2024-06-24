@@ -19,6 +19,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.example.cognitiveassesmenttest.R
 
+
+/**
+ * Activity for the drawing part.
+ */
 class DrawingActivity : AppCompatActivity() {
     private lateinit var sentenceInput: EditText
     private lateinit var checkSentenceButton: Button
@@ -26,6 +30,10 @@ class DrawingActivity : AppCompatActivity() {
     private lateinit var pentagon1: ImageView
     private lateinit var pentagon2: ImageView
 
+    /**
+     * Creates the view for the drawing part.
+     * @param savedInstanceState The saved instance state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -92,6 +100,10 @@ class DrawingActivity : AppCompatActivity() {
         setHorizontalTouchListener(pentagon2)
     }
 
+    /**
+     * Enables moving of a figure in horizontal direction on touch.
+     * @param imageView The image view.
+     */
     private fun setHorizontalTouchListener(imageView: ImageView) {
         imageView.setOnTouchListener(object : View.OnTouchListener {
             private var dX = 0f
@@ -119,6 +131,10 @@ class DrawingActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Checks if the pentagons are intersecting.
+     * @return True if the pentagons are intersecting, false otherwise.
+     */
     private fun checkIntersectingPentagons(): Boolean {
 
         val rect1 = Rect()
@@ -129,7 +145,12 @@ class DrawingActivity : AppCompatActivity() {
         return checkEmbeddedFigure(rect1, rect2)
     }
 
-
+    /**
+     * Checks if the figure is embedded in another figure.
+     * @param rect1 The first figure.
+     * @param rect2 The second figure.
+     * @return True if the figure is embedded in another figure, false otherwise.
+     */
     private fun checkEmbeddedFigure(rect1: Rect, rect2: Rect): Boolean {
         val intersectionRect = RectF()
 
