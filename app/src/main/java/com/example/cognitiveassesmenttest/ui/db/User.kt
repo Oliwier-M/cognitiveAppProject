@@ -1,10 +1,11 @@
 package com.example.cognitiveassesmenttest.ui.db
 
-class User (
-    val userId : String,
-    val name: String,
-    val surname: String,
-    val email: String,
-    val username: String,
-
-)
+data class User(
+    var userId: String? = null,
+    var name: String? = null,
+    var surname: String? = null,
+    var email: String? = null,
+    var username: String? = null
+) {
+    constructor() : this(null, null, null, null, null)
+}
