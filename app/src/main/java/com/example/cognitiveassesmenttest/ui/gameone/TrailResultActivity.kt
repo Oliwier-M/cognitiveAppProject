@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cognitiveassesmenttest.R
 import com.example.cognitiveassesmenttest.ui.adapters.ScoreAdapter
+import com.example.cognitiveassesmenttest.ui.db.CombinedScore
 import com.example.cognitiveassesmenttest.ui.db.HRBScore
 import com.example.cognitiveassesmenttest.ui.db.TMTScore
 import com.example.cognitiveassesmenttest.ui.interfaces.Score
@@ -128,13 +129,21 @@ class TrailResultActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     scoresList.clear()
                     for (scoreSnapshot in snapshot.children) {
-                        val score = scoreSnapshot.getValue(HRBScore::class.java)
+                        val score = scoreSnapshot.getValue(TMTScore::class.java)
                         if (score != null) {
-                            scoresList.add(score)
+
+                            val combinedScore = CombinedScore(
+                                userId = score.userId,
+                                score = "${score.scoreA.toInt() + score.scoreB.toInt()}",
+                                diagnosis = score.diagnosis,
+                                time = score.time
+                            )
+                            scoresList.add(combinedScore)
                         }
                     }
                     adapter.notifyDataSetChanged()
                 }
+
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("Firebase", "Failed to fetch scores", error.toException())

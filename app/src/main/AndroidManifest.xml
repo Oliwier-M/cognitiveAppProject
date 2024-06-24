@@ -16,6 +16,12 @@
         android:theme="@style/Theme.CognitiveAssesmentTest"
         tools:targetApi="34">
         <activity
+            android:name=".ui.user.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.StatsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.gameone.TrailResultActivity"
             android:exported="false" />
         <activity
