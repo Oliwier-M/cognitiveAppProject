@@ -25,6 +25,12 @@ class Timer (private val listener: TimerUpdateListener?) {
         handler.removeCallbacks(runnable) // Stop the timer
     }
 
+    fun resetTimer() {
+        stopTimer()
+        seconds = 0
+        listener?.onTimeUpdate(secondsToTime(seconds))
+    }
+
     @SuppressLint("DefaultLocale")
     private fun secondsToTime(seconds: Int): String {
         val minutes = (seconds % 3600) / 60

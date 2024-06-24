@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CognitiveAssesmentTest"
         tools:targetApi="34">
-        
+        <activity
+            android:name=".ui.gameone.TrailResultActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.hrb.SentenceActivity"
             android:exported="false" />
@@ -34,12 +36,10 @@
         <activity
             android:name=".ui.hrb.ShapeActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.gameone.TrailMakingTestActivity"
-            android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar"
-            android:exported="false" />
-        
+            android:exported="false"
+            android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar" />
         <activity
             android:name=".ui.mmse.SummaryActivity"
             android:exported="false" />
@@ -55,13 +55,11 @@
         <activity
             android:name=".ui.mmse.CalculationActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.mmse.RepetitionActivity"/>
-
+        <activity android:name=".ui.mmse.RepetitionActivity" />
         <activity
             android:name=".ui.login.RegisterActivity"
-            android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"
@@ -74,8 +72,8 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.CognitiveAssesmentTest.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"

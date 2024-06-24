@@ -22,4 +22,8 @@
     <string name="back">Back</string>
     <string name="timeFormat">00:00</string>
     <string name="start">start</string>
+    <string name="trail_making_test_finished">Trail Making Test finished</string>
+    <string name="halstead_reitan_battery_test_finished">Halstead Reitan Battery Test finished</string>
+    <string name="menu">menu</string>
+    <string name="your_previous_results">Your previous results:</string>
 </resources>

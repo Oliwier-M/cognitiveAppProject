@@ -2,6 +2,7 @@ package com.example.cognitiveassesmenttest.ui.gameone
 
 import Timer
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -16,19 +17,19 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
-import com.example.cognitiveassesmenttest.ui.MainMenuFragment
+import com.example.cognitiveassesmenttest.ui.MainActivity
+import com.example.cognitiveassesmenttest.ui.hrb.SentenceActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.random.Random
@@ -40,13 +41,14 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
     private lateinit var constraintLayout: ConstraintLayout
     private lateinit var mImageView: ImageView
     private lateinit var timeScore : CharSequence
+    private lateinit var prompt: TextView
 
     private lateinit var mCanvas: Canvas
     private lateinit var mBitmap: Bitmap
     private val mPaint = Paint()
 
     private var gameStarted = false
-    private var game = 1
+    private var game = 0
     private var lastNumber: Any = 0
     private var size = 0
 
@@ -59,6 +61,9 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
 
     private var scoreA = 0
     private var scoreB = 0
+
+    private var popupDialog: AlertDialog? = null
+    private lateinit var popupTextView: TextView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +79,7 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         mImageView = findViewById(R.id.bitmapView)
         val back = findViewById<Button>(R.id.backButton)
         start = findViewById(R.id.startButton)
-
+        prompt = findViewById(R.id.prompt)
 
         constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -102,25 +107,44 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         timerUtil = Timer(this)
         timerUtil.stopTimer()
 
+        showPopup("On this page are some numbers.\nBegin at 1 and draw a line from 1 to 2, 2 to 3, 3 to 4 and so on, in order, until you reach the end.\n" +
+                "Draw your line as fast as you can.\nThis is a tutorial sample, ready?")
+
         back.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, MainMenuFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity((intent))
         }
 
         start.setOnClickListener{
+            prompt.text = ""
+            game++
+            Log.d("GAMENUMBER", "$game")
             start.isEnabled = false
 
             CoroutineScope(Dispatchers.IO).launch {
+                val tutorialOne: List<Int> = (1..6).toList()
                 val gameOne: List<Int> = (1..20).toList()
+                val tutnumbers: List<Int> = (1..3).toList()
+                val tutletters: List<Char> = ('A'..'C').toList()
+                val tutorialTwo: List<Any> = tutnumbers.zip(tutletters).flatMap { (num, char) ->
+                    listOf(num, char)
+                }
                 val numbers: List<Int> = (1..10).toList()
                 val letters: List<Char> = ('A'..'J').toList()
                 val gameTwo: List<Any> = numbers.zip(letters).flatMap { (num, char) ->
                     listOf(num, char)
                 }
 
-                val items = if (game % 2 == 1) gameOne else gameTwo
+//                val items = if (game % 2 == 1) gameOne else gameTwo
+
+                val items = when (game){
+                    1 -> tutorialOne
+                    2 -> gameOne
+                    3 -> tutorialTwo
+                    4 -> gameTwo
+                    else -> {tutorialOne}
+                }
+
                 addItemsRandomly(items)
 
                 withContext(Dispatchers.Main) {
@@ -130,14 +154,55 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         }
     }
 
-    private fun calculateScore(timeScore: CharSequence): Int{
+    private fun showPopup(text: String) {
+        if (popupDialog == null) {
+            val builder = AlertDialog.Builder(this)
+            val view = layoutInflater.inflate(R.layout.popup_layout, null)
+            popupTextView = view.findViewById(R.id.popupText)
+            builder.setView(view)
+            builder.setCancelable(true)
+            popupDialog = builder.create()
+        }
+        popupTextView.text = text
+        popupDialog?.show()
+    }
+
+    fun onCloseButtonClick(view: View) {
+        popupDialog?.dismiss()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        popupDialog?.dismiss()
+    }
+
+    private fun calculateScore(timeScore: CharSequence){
         val timeParts = timeScore.split(":")
         val minutes = timeParts[0].toInt()
         val seconds = timeParts[1].toInt()
         val score = minutes * 60 + seconds
 
-        // save into firebase straight from here
-        return score
+        when (game) {
+            2 -> {
+                scoreA = score
+                resetCanvas()
+            }
+            4 -> {
+                scoreB = score
+                val handler = android.os.Handler()
+                val intent = Intent(this, TrailResultActivity::class.java)
+                intent.putExtra("scoreA", scoreA)
+                intent.putExtra("scoreB", scoreB)
+                handler.postDelayed({
+                    startActivity(intent)
+                    finish()
+                }, 2000)
+            }
+            else -> {
+                resetCanvas()
+            }
+        }
+
     }
 
     private fun addItemsRandomly(itemList: List<Any>) {
@@ -177,7 +242,6 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
             var randomY: Int
             var tooFar: Boolean
             var tooClose: Boolean
-            var onLine: Boolean
 
             do {
                 attempts++
@@ -211,7 +275,6 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
             } while (tooFar || tooClose)
 
             placedItems.add(Triple(i, randomX, randomY))
-            m = 2.2
 
             runOnUiThread {
                 itemView.id = View.generateViewId()
@@ -263,14 +326,9 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
 
                     start.isEnabled = true
                     toggleTimer()
-                    game++
                     timeScore = timerText.text.toString()
 
-                    if (game%2 == 1){
-                        scoreA = calculateScore(timeScore)
-                    }else{
-                        scoreB = calculateScore(timeScore)
-                    }
+                    calculateScore(timeScore)
                 }
             }
             lastNumber = pointNumber
@@ -300,11 +358,39 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         gameStarted = !gameStarted
     }
 
+
     override fun onTimeUpdate(time: String?) {
         runOnUiThread {
             timerText.text = time
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun resetCanvas() {
+        CoroutineScope(Dispatchers.IO).launch {
+            mBitmap = Bitmap.createBitmap(constraintLayout.width, constraintLayout.height, Bitmap.Config.ARGB_8888)
+            mCanvas.setBitmap(mBitmap)
+            mCanvas.drawColor(Color.TRANSPARENT)
+            placedItems.clear()
+
+            withContext(Dispatchers.Main) {
+                mImageView.setImageBitmap(mBitmap)
+                constraintLayout.removeAllViews()
+                constraintLayout.addView(mImageView)
+                mPaint.color = Color.BLACK
+                mPaint.style = Paint.Style.STROKE
+                mPaint.strokeWidth = 20F
+                mPaint.isAntiAlias = true
+                timerUtil.resetTimer()
+                timerText.text = "00:00"
+                when(game){
+                    1, 3 -> showPopup("Now the real test. Good luck!")
+                    2 -> showPopup("On this page are some numbers and letters. Begin at 1 and draw a line from 1 to A, A to 2, 2 to B and so on, in order, until you reach the end.\n" +
+                            "Draw your line as fast as you can.\nThis is a tutorial sample, ready?")
+                }
+
+            }
+        }
+    }
 }
 
