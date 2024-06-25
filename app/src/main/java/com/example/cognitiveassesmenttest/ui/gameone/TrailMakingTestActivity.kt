@@ -34,6 +34,10 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.random.Random
 
+/**
+ * TrailMakingTestActivity is an activity that handles the Trail Making Test, which includes
+ * drawing lines between sequentially numbered points as fast as possible.
+ */
 class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  {
     private lateinit var timerText: TextView
     private lateinit var timerUtil: Timer
@@ -152,6 +156,11 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         }
     }
 
+    /**
+     * Shows a popup dialog with the given text.
+     *
+     * @param text The text to be displayed in the popup.
+     */
     private fun showPopup(text: String) {
         if (popupDialog == null) {
             val builder = AlertDialog.Builder(this)
@@ -165,6 +174,11 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         popupDialog?.show()
     }
 
+    /**
+     * Closes the popup dialog.
+     *
+     * @param view The view that triggers the close action.
+     */
     fun onCloseButtonClick(view: View) {
         popupDialog?.dismiss()
     }
@@ -174,6 +188,11 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         popupDialog?.dismiss()
     }
 
+    /**
+     * Calculates the score based on the given time.
+     *
+     * @param timeScore The time taken to complete the task.
+     */
     private fun calculateScore(timeScore: CharSequence){
         val timeParts = timeScore.split(":")
         val minutes = timeParts[0].toInt()
@@ -203,6 +222,11 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
 
     }
 
+    /**
+     * Adds items randomly on the canvas.
+     *
+     * @param itemList The list of items to be added.
+     */
     private fun addItemsRandomly(itemList: List<Any>) {
         val inflater = LayoutInflater.from(this)
 
@@ -294,6 +318,15 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         }
     }
 
+    /**
+     * Handles the click event on a point.
+     *
+     * @param pointNumber The number of the clicked point.
+     * @param x The x-coordinate of the clicked point.
+     * @param y The y-coordinate of the clicked point.
+     * @param items The list of items.
+     * @param size The size of the point.
+     */
     private suspend  fun onPointClicked(pointNumber: Any, x: Float, y: Float, items: List<Any>, size: Int) {
         val d = size/2
         if (pointNumber == 1 || isPointValid(pointNumber, lastNumber, items)) {
@@ -331,6 +364,14 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         }
     }
 
+    /**
+     * Draws a line on the canvas.
+     *
+     * @param startX The x-coordinate of the start point.
+     * @param startY The y-coordinate of the start point.
+     * @param stopX The x-coordinate of the end point.
+     * @param stopY The y-coordinate of the end point.
+     */
     private suspend fun drawLineOnCanvas(startX: Float, startY: Float, stopX: Float, stopY: Float) {
         withContext(Dispatchers.IO) {
             mCanvas.drawLine(startX, startY, stopX, stopY, mPaint)
@@ -340,11 +381,22 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         }
     }
 
+    /**
+     * Checks if a point is valid - next point on the list.
+     *
+     * @param pointNumber The number of the point to check.
+     * @param lastNumber The last number that was clicked.
+     * @param items The list of items.
+     * @return True if the point is valid, false otherwise.
+     */
     private fun isPointValid(pointNumber: Any, lastNumber: Any, items: List<Any>): Boolean{
         val index = items.indexOf(pointNumber)
         return items[index-1] == lastNumber
     }
 
+    /**
+     * Toggles the timer.
+     */
     private fun toggleTimer() {
         if (gameStarted) {
             timerUtil.stopTimer()
@@ -361,6 +413,9 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
         }
     }
 
+    /**
+     * Resets the canvas for the Trail Making Test, clearing previous drawings and preparing for a new session.
+     */
     @SuppressLint("SetTextI18n")
     private fun resetCanvas() {
         CoroutineScope(Dispatchers.IO).launch {

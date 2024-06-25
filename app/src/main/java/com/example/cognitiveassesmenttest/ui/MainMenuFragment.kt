@@ -15,9 +15,7 @@ import com.example.cognitiveassesmenttest.ui.mmse.RepetitionActivity
 import com.google.firebase.FirebaseApp
 
 /**
- * A simple [Fragment] subclass.
- * Use the [MainMenuFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment for displaying the main menu of cognitive assessment games.
  */
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
