@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cognitiveassesmenttest.ui.MainActivity
 import com.example.cognitiveassesmenttest.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 /**
  * Activity for the login screen.
@@ -30,7 +29,6 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         auth = FirebaseAuth.getInstance()
 
         val login = findViewById<Button>(R.id.loginButton)

@@ -14,6 +14,4 @@ data class User(
     var surname: String? = null,
     var email: String? = null,
     var username: String? = null
-) {
-    constructor() : this(null, null, null, null, null)
-}
+)
