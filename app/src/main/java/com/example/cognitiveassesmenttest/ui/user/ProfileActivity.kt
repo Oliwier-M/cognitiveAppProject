@@ -1,5 +1,6 @@
 package com.example.cognitiveassesmenttest.ui.user
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -122,21 +123,51 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     /**
-     * Update user profile in the database
-     *
+     * Update user profile in the database, only if changes are provided.
      */
     private fun updateUserProfile() {
+        val newUsername = username.text.toString()
+        val newName = name.text.toString()
+        val newSurname = surname.text.toString()
+        val newEmail = email.text.toString()
+
+        val originalUser = User(
+            username = username.hint.toString(),
+            name = name.hint.toString(),
+            surname = surname.hint.toString(),
+            email = email.hint.toString()
+        )
+
+        if (newUsername == originalUser.username &&
+            newName == originalUser.name &&
+            newSurname == originalUser.surname &&
+            newEmail == originalUser.email
+        ) {
+            return
+        }
+
+        val user = Firebase.auth.currentUser
+        user?.updateEmail(newEmail)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "User email address updated.")
+                } else {
+                    Log.e(TAG, "Failed to update email address.", task.exception)
+                }
+            }
+
         val database = Firebase.database
-        val userRef = database.getReference("users").child(Firebase.auth.currentUser!!.uid)
+        val userRef = database.getReference("users").child(user!!.uid)
         val updatedUser = User(
-            username = username.text.toString(),
-            name = name.text.toString(),
-            surname = surname.text.toString(),
-            email = email.text.toString()
+            username = newUsername,
+            name = newName,
+            surname = newSurname,
+            email = newEmail
         )
         userRef.setValue(updatedUser)
         enableEditing(false)
     }
+
 
     /**
      * Delete user from database and authentication

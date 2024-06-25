@@ -27,6 +27,7 @@
         android:layout_marginTop="50dp"
         android:enabled="false"
         android:fontFamily="@font/baloo_tammudu"
+        android:hint="username"
         android:padding="10sp"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,10 +39,11 @@
         android:id="@+id/nameView"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:fontFamily="@font/baloo_tammudu"
+        android:hint="name"
         android:padding="10sp"
         android:textSize="20sp"
-        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,10 +53,11 @@
         android:id="@+id/surnameView"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:fontFamily="@font/baloo_tammudu"
+        android:hint="surname"
         android:padding="10sp"
         android:textSize="20sp"
-        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,10 +67,11 @@
         android:id="@+id/emailView"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:fontFamily="@font/baloo_tammudu"
+        android:hint="email"
         android:padding="10sp"
         android:textSize="20sp"
-        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,26 +82,26 @@
         android:layout_width="150dp"
         android:layout_height="100dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="150dp"
         android:backgroundTint="@color/button_default"
         android:fontFamily="@font/alfa_slab_one"
         android:text="Delete account"
         app:cornerRadius="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/logout"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:layout_marginTop="30dp"
         android:layout_marginEnd="28dp"
+        android:layout_marginBottom="150dp"
         android:backgroundTint="@color/button_default"
         android:fontFamily="@font/alfa_slab_one"
         android:text="Log out"
         app:cornerRadius="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/menu"
@@ -139,6 +143,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailView"/>
+        app:layout_constraintTop_toBottomOf="@+id/emailView"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
