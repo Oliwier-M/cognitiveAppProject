@@ -30,6 +30,9 @@ import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Activity to display Trail Making Test (TMT) result and save/fetch scores from Firebase.
+ */
 class TrailResultActivity : AppCompatActivity() {
 
     private lateinit var resultTextA: TextView
@@ -81,6 +84,12 @@ class TrailResultActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Sets the information text based on the calculated scores.
+     *
+     * @param scoreA The score obtained in test A.
+     * @param scoreB The score obtained in test B.
+     */
     @SuppressLint("SetTextI18n")
     private fun setInfoText(scoreA: Int, scoreB: Int ) {
         val finalScore = scoreA + scoreB
@@ -92,6 +101,12 @@ class TrailResultActivity : AppCompatActivity() {
         infoText.text = "Based on the result, $diagnosis."
     }
 
+    /**
+     * Saves the TMT scores to Firebase.
+     *
+     * @param scoreA The score obtained in test A.
+     * @param scoreB The score obtained in test B.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveScoreToFirebase(scoreA: Int, scoreB: Int) {
         val user = auth.currentUser
@@ -123,6 +138,9 @@ class TrailResultActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Fetches TMT scores from Firebase for the current user.
+     */
     private fun fetchScoresFromFirebase() {
         val user = auth.currentUser
         if (user != null) {

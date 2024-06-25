@@ -36,6 +36,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * Activity to display statistics (scores) for various cognitive assessment tests fetched from Firebase.
+ */
 class StatsActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
@@ -75,6 +78,9 @@ class StatsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Updates the UI with the latest and best scores for each cognitive assessment test.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUI() {
         // Update UI components with fetched scores
@@ -92,6 +98,12 @@ class StatsActivity : AppCompatActivity() {
         updateStatsItem(mmseItem, "Mini Mental State Examination", latestMMSE.toString(), bestMMSE.toString())
     }
 
+    /**
+     * Finds the latest score among the given scores.
+     *
+     * @param scores List of scores to search through.
+     * @return The latest score found.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun findLatestScore(scores: List<CombinedScore>): Int {
         if (scores.isEmpty()) return 0
@@ -109,6 +121,12 @@ class StatsActivity : AppCompatActivity() {
         return latestScore?.score?.substringBefore("/")?.toIntOrNull() ?: 0
     }
 
+    /**
+     * Finds the highest score among the given scores.
+     *
+     * @param scores List of scores to search through.
+     * @return The highest score found.
+     */
     private fun findHighestScore(scores: List<CombinedScore>): Int {
         if (scores.isEmpty()) return 0
         val highestScore = scores.maxByOrNull {
@@ -118,6 +136,12 @@ class StatsActivity : AppCompatActivity() {
         return highestScore?.score?.substringBefore("/")?.toIntOrNull() ?: 0
     }
 
+    /**
+     * Finds the lowest score among the given scores.
+     *
+     * @param scores List of scores to search through.
+     * @return The lowest score found.
+     */
     private fun findLowestScore(scores: List<CombinedScore>): Int {
         if (scores.isEmpty()) return 0
         val lowestScore = scores.minByOrNull {
@@ -127,6 +151,10 @@ class StatsActivity : AppCompatActivity() {
         return lowestScore?.score?.substringBefore("/")?.toIntOrNull() ?: 0
     }
 
+    /**
+     * Fetches scores from Firebase for Trail Making Test (TMT), Halstead Reitan Battery Test (HRB), and
+     * Mini Mental State Examination (MMSE) for the current user.
+     */
     private fun fetchScoresFromFirebase() {
         val user = auth.currentUser
         if (user != null) {
@@ -197,6 +225,14 @@ class StatsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Updates a statistics item (layout) with provided details.
+     *
+     * @param layout Layout representing the statistics item.
+     * @param title Title of the test.
+     * @param latestScore Latest score obtained.
+     * @param bestScore Best score obtained.
+     */
     private fun updateStatsItem(layout: ConstraintLayout, title: String, latestScore: String, bestScore: String) {
         val titleTextView = layout.findViewById<TextView>(R.id.titleText)
         val latestTextView = layout.findViewById<TextView>(R.id.latestText)
