@@ -12,6 +12,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.example.cognitiveassesmenttest.R
 
+/**
+ * Activity to test the user's ability to differentiate between 3 sounds.
+ * The user is presented with 3 sounds and must determine if they are the same or different.
+ * The user is then presented with three sounds and must determine which of the three sounds is different.
+ * The user's score is passed to the next activity.
+ */
 class SameSoundActivity : AppCompatActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var btnPlay: Button
@@ -27,7 +33,13 @@ class SameSoundActivity : AppCompatActivity() {
         R.raw.wood,
         R.raw.glass
     )
-
+    /**
+     * Sets up the activity layout and views.
+     * The user is presented with a play button to listen to a sound.
+     * The user is then presented with a button to determine if the sound is the same or different.
+     * The user is then presented with three buttons to determine which sound is different.
+     * The user's score is passed to the next activity.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -110,7 +122,11 @@ class SameSoundActivity : AppCompatActivity() {
             }, 1000)
         }
     }
-
+    /**
+     * Handles the user's answer selection.
+     * Updates the button's appearance based on the user's selection.
+     * Updates the check button's state based on the user's selection.
+     */
     private fun handleAnswerClick(button: Button?) {
         button?.let {
             it.isSelected = !it.isSelected
@@ -122,11 +138,15 @@ class SameSoundActivity : AppCompatActivity() {
         }
         updateCheckButtonState()
     }
-
+    /**
+     * Updates the state of the check button based on the user's answer selection.
+     */
     private fun updateCheckButtonState() {
         checkButton.isEnabled = ans1.isSelected || ans2.isSelected || ans3.isSelected
     }
-
+    /**
+     * Plays the current rhythm based on user click.
+     */
     private fun playCurrentRhythm(currentRhythmIndex: Int) {
         if (::mediaPlayer.isInitialized) {
             mediaPlayer.release()
@@ -139,7 +159,9 @@ class SameSoundActivity : AppCompatActivity() {
 
         enableAnswerButtons(false)
     }
-
+    /**
+     * Checks the user's answers and returns the user's score.
+     */
     private fun checkAnswers(): Int {
         val selectedAnswers = mutableListOf<Int>()
 
@@ -176,7 +198,9 @@ class SameSoundActivity : AppCompatActivity() {
         return score
     }
 
-
+    /**
+     * Enables or disables the answer buttons based on the given boolean.
+     */
     private fun enableAnswerButtons(enable: Boolean) {
         ans1.isEnabled = enable
         ans2.isEnabled = enable

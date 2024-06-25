@@ -24,6 +24,12 @@ import com.google.firebase.database.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Activity to display the result of the Halstead Reitan Battery test.
+ * The user's score is displayed along with a diagnosis based on the score.
+ * The user's score is saved to Firebase and the user's previous scores are fetched from Firebase.
+ * The user can return to the main menu by clicking the menu button.
+ */
 class ResultActivity : AppCompatActivity() {
 
     private lateinit var resultText: TextView
@@ -35,6 +41,12 @@ class ResultActivity : AppCompatActivity() {
     private lateinit var scoresList: MutableList<Score>
     private lateinit var adapter: ScoreAdapter
 
+    /**
+     * Sets up the activity layout and views.
+     * Displays the user's score and diagnosis.
+     * Saves the user's score to Firebase.
+     * Fetches the user's previous scores from Firebase.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +82,9 @@ class ResultActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    /**
+     * Sets the diagnosis based on the user's score.
+     */
     private fun setInfoText(finalScore: Int) {
         diagnosis = when {
             finalScore >= 12 -> "no cognitive impairment"
@@ -80,7 +94,9 @@ class ResultActivity : AppCompatActivity() {
         }
         infoText.text = "Based on the result, you might have $diagnosis."
     }
-
+    /**
+     * Saves the user's score to Firebase.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveScoreToFirebase(score: Int) {
         val user = auth.currentUser
@@ -111,7 +127,9 @@ class ResultActivity : AppCompatActivity() {
                 }
         }
     }
-
+    /**
+     * Fetches the user's previous scores from Firebase.
+     */
     private fun fetchScoresFromFirebase() {
         val user = auth.currentUser
         if (user != null) {

@@ -27,6 +27,12 @@ import com.google.firebase.database.ValueEventListener
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Summary Activity shows the result of the test and possible diagnosis.
+ * It also saves the score to Firebase and fetches the user's previous scores.
+ * It displayes the previous scores in a RecyclerView.
+ *
+ */
 class SummaryActivity : AppCompatActivity() {
 
     private lateinit var resultText: TextView
@@ -38,6 +44,13 @@ class SummaryActivity : AppCompatActivity() {
     private lateinit var scoresList: MutableList<Score>
     private lateinit var adapter: ScoreAdapter
 
+    /**
+     * OnCreate method sets the content view, enables edge-to-edge display,
+     * initializes the views, sets the result text and info text, saves the score to Firebase,
+     * fetches the user's previous scores and sets the menu button to navigate back to the main activity.
+     *
+     * @param savedInstanceState Bundle
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +87,11 @@ class SummaryActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * SetInfoText method sets the diagnosis based on the final score.
+     *
+     * @param finalScore Int
+     */
     private fun setInfoText(finalScore: Int) {
         diagnosis = when {
             finalScore >= 16 -> "no cognitive impairment"
@@ -83,7 +101,11 @@ class SummaryActivity : AppCompatActivity() {
         }
         infoText.text = "You have $diagnosis"
     }
-
+    /**
+     * SaveScoreToFirebase method saves the score to Firebase.
+     *
+     * @param score Int
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveScoreToFirebase(score: Int) {
         val user = auth.currentUser
@@ -114,7 +136,10 @@ class SummaryActivity : AppCompatActivity() {
                 }
         }
     }
-
+    /**
+     * FetchScoresFromFirebase method fetches the user's previous scores from Firebase.
+     *
+     */
     private fun fetchScoresFromFirebase() {
         val user = auth.currentUser
         if (user != null) {

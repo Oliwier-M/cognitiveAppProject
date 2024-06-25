@@ -17,16 +17,21 @@ import com.example.cognitiveassesmenttest.ui.user.StatsActivity
 import com.google.firebase.database.FirebaseDatabase
 import java.util.logging.Handler
 
-
+/**
+ * Main Activity class that is the entry point of the application.
+ * It is responsible for setting up the navigation drawer and the toolbar.
+ * It shows the buttons to start the tests, view the stats and view the profile.
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private val timeTextView: TextView? = null
-    private val handler: Handler? = null
-    private val runnable: Runnable? = null
-    private val seconds = 0
 
+    /**
+     * Function that is called when the activity is created.
+     * It sets up the navigation drawer and the toolbar.
+     * It also sets up the buttons to start the tests, view the stats and view the profile.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,10 +44,6 @@ class MainActivity : AppCompatActivity() {
         val stats = findViewById<ImageButton>(R.id.statsButton)
         val profile = findViewById<ImageButton>(R.id.profileButton)
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-
         stats.setOnClickListener{
             val intent = Intent(this, StatsActivity::class.java)
             startActivity(intent)
@@ -54,13 +55,11 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
+    /**
+     * Function that is called when the activity is created.
+     * It sets up the navigation drawer and the toolbar.
+     * It also sets up the buttons to start the tests, view the stats and view the profile.
+     */
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()

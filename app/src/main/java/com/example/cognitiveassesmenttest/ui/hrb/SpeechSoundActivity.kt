@@ -14,6 +14,11 @@ import androidx.core.view.isVisible
 import com.example.cognitiveassesmenttest.R
 import java.util.Locale
 
+/**
+ * Activity for the Speech Sound test. The user is presented with a series of syllables to listen.
+ * After listening to the syllables, the user is presented with three options to choose from.
+ * The user has to select the answer with correct syllables from the options.
+ */
 class SpeechSoundActivity : AppCompatActivity() {
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var readButton: Button
@@ -23,6 +28,9 @@ class SpeechSoundActivity : AppCompatActivity() {
     private lateinit var checkButton: Button
     private lateinit var ansText: TextView
 
+    /**
+     * Initializes the activity and sets up the UI elements.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -108,7 +116,9 @@ class SpeechSoundActivity : AppCompatActivity() {
             }
         }
     }
-
+    /**
+     * Releases the resources used by the TextToSpeech engine.
+     */
     private fun handleAnswerClick(button: Button?) {
         checkButton.isEnabled = true
         button?.let {
@@ -117,7 +127,9 @@ class SpeechSoundActivity : AppCompatActivity() {
             it.backgroundTintList = resources.getColorStateList(R.color.button_selected)
         }
     }
-
+    /**
+     * Releases the resources used by the TextToSpeech engine.
+     */
     private fun deselectAllButtons() {
         ans1.isSelected = false
         ans2.isSelected = false
@@ -126,7 +138,9 @@ class SpeechSoundActivity : AppCompatActivity() {
         ans2.backgroundTintList = resources.getColorStateList(R.color.button_default)
         ans3.backgroundTintList = resources.getColorStateList(R.color.button_default)
     }
-
+    /**
+     * Checks the selected answer and returns the score.
+     */
     private fun checkAnswers(): Int {
         var score = 0
         ans3.backgroundTintList = resources.getColorStateList(R.color.green)

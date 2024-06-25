@@ -12,6 +12,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cognitiveassesmenttest.R
 
+/**
+ * RepeatingActivity is an activity that displays the Repeating Activity of the MMSE test.
+ * The user is asked to recall three words: "MONKEY", "APPLE", and "SHELF".
+ * The user is then asked to write them down.
+ * The user is scored based on the number of words they repeat correctly.
+ *
+ */
+
 class RepeatingActivity : AppCompatActivity() {
 
     private lateinit var firstWord: EditText
@@ -19,6 +27,10 @@ class RepeatingActivity : AppCompatActivity() {
     private lateinit var thirdWord: EditText
     private lateinit var checkButton: Button
 
+    /**
+     * onCreate is called when the activity is starting. This is where most initialization should go.
+     * @param savedInstanceState is a reference to a Bundle object that is passed into the onCreate method of every Android Activity.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -73,6 +85,13 @@ class RepeatingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * checkAnswers checks the user's answers against the correct answers and returns the score.
+     * @param first is the user's answer to the first word.
+     * @param second is the user's answer to the second word.
+     * @param third is the user's answer to the third word.
+     * @return the score based on the number of correct answers.
+     */
     private fun checkAnswers(first: String, second: String, third: String): Int {
         val correctFirstWord = "MONKEY"
         val correctSecondWord = "APPLE"

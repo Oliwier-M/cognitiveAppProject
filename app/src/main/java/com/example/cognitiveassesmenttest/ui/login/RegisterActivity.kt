@@ -3,15 +3,18 @@ package com.example.cognitiveassesmenttest.ui.login
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cognitiveassesmenttest.R
+import com.example.cognitiveassesmenttest.ui.db.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -21,6 +24,10 @@ import kotlinx.coroutines.runBlocking
  */
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var username: String
+    private lateinit var email: String
+    private lateinit var name: String
+    private lateinit var surname: String
 
     /**
      * Creates the view for the register screen.
@@ -35,9 +42,12 @@ class RegisterActivity : AppCompatActivity() {
         val signin = findViewById<Button>(R.id.signInButton)
         val inputEmail = findViewById<TextView>(R.id.emailInput)
         val inputUsername = findViewById<TextView>(R.id.usernameInput)
+        val inputName = findViewById<TextView>(R.id.nameInput)
+        val inputSurname = findViewById<TextView>(R.id.surnameInput)
         val inputPassword = findViewById<TextView>(R.id.passwordInput)
         val inputPasswordRep = findViewById<TextView>(R.id.repPasswordInput)
         val login = findViewById<TextView>(R.id.login)
+
 
 
         auth = Firebase.auth
@@ -50,12 +60,14 @@ class RegisterActivity : AppCompatActivity() {
 
         // Sign up button clicked action
         signin.setOnClickListener {
-            val email = inputEmail.text.toString().trim()
-            val username = inputUsername.text.toString().trim()
+            email = inputEmail.text.toString().trim()
+            username = inputUsername.text.toString().trim()
+            name = inputName.text.toString().trim()
+            surname = inputSurname.text.toString().trim()
             val password = inputPassword.text.toString().trim()
             val repeatedPassword = inputPasswordRep.text.toString().trim()
 
-            if (verifyData(email, username, password, repeatedPassword)) {
+            if (verifyData(password, repeatedPassword)) {
                 createUser(email, password)
             }
         }
@@ -71,10 +83,10 @@ class RegisterActivity : AppCompatActivity() {
      * @return True if the data is correct, false otherwise.
      */
     private fun verifyData(
-        email: String, username: String, password: String, repeatedPassword: String
+        password: String, repeatedPassword: String
     ): Boolean {
         var result = true
-        if (email.isEmpty() || username.isEmpty() || password.isEmpty() || repeatedPassword.isEmpty()) {
+        if (email.isEmpty() || username.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty() || repeatedPassword.isEmpty()) {
             Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show()
             result = false
         }
@@ -130,12 +142,8 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    runBlocking {
-                        launch(Dispatchers.IO) {
-                            // TODO: addUserToDatabase()
-                        }
-                    }
-
+                    val id = auth.currentUser?.uid
+                    addUserToFirebase(id)
                     Toast.makeText(this, "User created", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, LoginActivity::class.java)
                     intent.putExtra("email", email)
@@ -148,23 +156,22 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    /** TODO:
     /**
-     * Adds the user to the database.
-    */
-    private suspend fun addUserToDatabase() {
-    return withContext(Dispatchers.IO) {
-    val connection = DBconnection.getConnection()
-    val user = Users(
-    nameInput.text.toString(),
-    lastNameInput.text.toString(),
-    emailInput.text.toString()
-    )
-    val userQueries = UsersQueries(connection)
-    userQueries.addUser(user)
-    }
-    }
-
+     * Adds a user to the Firebase realtime database.
+     * @param userId The user's id.
      */
-
+    private fun addUserToFirebase(userId: String?) {
+        val database = Firebase.database
+        val usersRef = database.getReference("users")
+        val user = userId?.let { User(it, name, surname, email, username) }
+        if (userId != null) {
+            usersRef.child(userId).setValue(user)
+                .addOnSuccessListener {
+                    Log.d("firebase", "User added to database")
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("firebase", "Failed to add user to database", exception)
+                }
+        }
+    }
 }

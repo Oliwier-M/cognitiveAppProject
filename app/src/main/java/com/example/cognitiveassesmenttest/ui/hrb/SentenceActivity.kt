@@ -22,6 +22,12 @@ import com.example.cognitiveassesmenttest.R
 
 import java.util.Locale
 
+
+/**
+ * Activity for the sentence recognition test.
+ * The user is presented with a series of sentences to read out loud.
+ * The user's speech is recognized and compared to the correct sentence.
+ */
 class SentenceActivity : AppCompatActivity(), RecognitionListener {
     private var textToSpeech: TextToSpeech? = null
     private var speechRecognizer: SpeechRecognizer? = null
@@ -42,6 +48,11 @@ class SentenceActivity : AppCompatActivity(), RecognitionListener {
         private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
     }
 
+    /**
+     * Initializes the activity.
+     * Sets up the text-to-speech and speech recognition engines.
+     * Displays the first sentence to read.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -104,12 +115,18 @@ class SentenceActivity : AppCompatActivity(), RecognitionListener {
             true
         }
     }
-
+    /**
+     * Handles the result of requesting permissions.
+     * If the user grants the permission, the speech recognition engine is set up.
+     */
     private fun setupSpeechRecognition() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
         speechRecognizer?.setRecognitionListener(this)
     }
-
+    /**
+     * Reads the next sentence in the list.
+     * If there are no more sentences, the activity is finished and the result is displayed.
+     */
     private fun readNextSentence() {
         if (currentSentenceIndex < sentences.size) {
             val sentence = sentences[currentSentenceIndex]
@@ -127,7 +144,9 @@ class SentenceActivity : AppCompatActivity(), RecognitionListener {
         }
     }
 
-
+    /**
+     * Starts listening for speech input.
+     */
     private fun startListening() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -161,7 +180,12 @@ class SentenceActivity : AppCompatActivity(), RecognitionListener {
         }
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
-
+    /**
+     * Handles the result of speech recognition.
+     * Compares the recognized sentence to the correct sentence.
+     * If the recognized sentence is correct, the score is incremented.
+     * Reads the next sentence.
+     */
     override fun onResults(results: Bundle?) {
         val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
         val recognizedSentence = matches?.joinToString(" ")
@@ -180,7 +204,9 @@ class SentenceActivity : AppCompatActivity(), RecognitionListener {
 
     override fun onPartialResults(partialResults: Bundle?) {}
     override fun onEvent(eventType: Int, params: Bundle?) {}
-
+    /**
+     * Releases resources when the activity is destroyed.
+     */
     override fun onDestroy() {
         textToSpeech?.stop()
         textToSpeech?.shutdown()
