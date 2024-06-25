@@ -1,6 +1,7 @@
 package com.example.cognitiveassesmenttest.ui.gameone
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cognitiveassesmenttest.R
+import com.example.cognitiveassesmenttest.ui.MainActivity
 import com.example.cognitiveassesmenttest.ui.adapters.ScoreAdapter
 import com.example.cognitiveassesmenttest.ui.db.CombinedScore
 import com.example.cognitiveassesmenttest.ui.db.HRBScore
@@ -51,7 +53,7 @@ class TrailResultActivity : AppCompatActivity() {
             insets
         }
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         auth = FirebaseAuth.getInstance()
         resultTextA = findViewById(R.id.resultAText)
         resultTextB = findViewById(R.id.resultBText)
@@ -72,6 +74,11 @@ class TrailResultActivity : AppCompatActivity() {
         saveScoreToFirebase(finalScoreA, finalScoreB)
         fetchScoresFromFirebase()
 
+        menuButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     @SuppressLint("SetTextI18n")

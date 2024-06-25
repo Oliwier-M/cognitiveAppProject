@@ -7,11 +7,67 @@
     android:layout_height="match_parent"
     tools:context=".ui.user.StatsActivity">
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="166dp"
-        tools:layout_editor_absoluteY="164dp" />
+    <Button
+        android:id="@+id/menuButton"
+        android:layout_width="93dp"
+        android:layout_height="53dp"
+        android:backgroundTint="#7FD641"
+        android:fontFamily="@font/alfa_slab_one"
+        android:text="@string/menu"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        app:layout_constraintBottom_toTopOf="@+id/menuButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <include
+                android:id="@+id/TMTstats"
+                layout="@layout/stats_item"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
+
+            <include
+                android:id="@+id/MMSEstats"
+                layout="@layout/stats_item"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp" />
+
+            <include
+                android:id="@+id/HRBTstats"
+                layout="@layout/stats_item"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp" />
+
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Another view below the items"-->
+            <!--                android:textSize="18dp"-->
+            <!--                android:padding="16dp" />-->
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
