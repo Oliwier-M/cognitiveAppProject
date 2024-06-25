@@ -135,8 +135,6 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
                     listOf(num, char)
                 }
 
-//                val items = if (game % 2 == 1) gameOne else gameTwo
-
                 val items = when (game){
                     1 -> tutorialOne
                     2 -> gameOne
@@ -231,7 +229,6 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
                 }
             })
 
-            // Set the text of the TextView
             val pointNumber = itemView.findViewById<TextView>(R.id.pointNumber)
             pointNumber.text = i.toString()
 
@@ -280,7 +277,6 @@ class TrailMakingTestActivity : AppCompatActivity(), Timer.TimerUpdateListener  
                 itemView.id = View.generateViewId()
                 constraintLayout.addView(itemView)
 
-                // Apply constraints on the UI thread
                 ConstraintSet().apply {
                     clone(constraintLayout)
                     connect(itemView.id, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, randomX)

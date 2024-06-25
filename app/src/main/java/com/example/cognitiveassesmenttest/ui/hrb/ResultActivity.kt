@@ -46,7 +46,7 @@ class ResultActivity : AppCompatActivity() {
             insets
         }
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         auth = FirebaseAuth.getInstance()
         resultText = findViewById(R.id.resultText)
         infoText = findViewById(R.id.infoText)

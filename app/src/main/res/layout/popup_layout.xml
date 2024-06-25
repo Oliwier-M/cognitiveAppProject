@@ -1,25 +1,32 @@
 <!-- popup_layout.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:background="#FDFDFA"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/popupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:text="Popup Text Placeholder"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:text="Popup Text Placeholder" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/closeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFC5F"
+        android:fontFamily="@font/bowlby_one_sc"
         android:onClick="onCloseButtonClick"
         android:text="Begin"
-        android:textSize="16sp" />
+        android:textColor="#161123"
+        android:textSize="16sp"
+        app:cornerRadius="20dp" />
 </LinearLayout>
